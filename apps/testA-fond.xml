@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <application title="Test A - fond seul" showhelp="false" measuretools="true" zoomtools="true" initialextenttool="true" coordinates="false" lang="fr"/>
+    <mapoptions projection="EPSG:3857" center="-366907,6134858" zoom="13" maxzoom="19"/>
+    <baselayers style="default">
+        <baselayer type="OSM" id="osm" label="OpenStreetMap" title="OpenStreetMap" url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" format="image/png" visible="true" attribution="© OpenStreetMap contributors"/>
+    </baselayers>
+    <themes/>
+</config>
