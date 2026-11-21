@@ -64,6 +64,56 @@
 
   loadData(true).then(forceRender);
 
+  /* ---------- synchro automatique : une fiche affichee = cases deja coherentes ----------
+   * Un observer surveille le panneau : des qu'un bloc .elag-cmt-block apparait
+   * (ouverture d'une fiche parcelle), on coche/decoche selon l'etat reel de la table,
+   * immediatement avec les donnees en cache, puis une seconde fois apres relecture
+   * Grist pour garantir la coherence couleur <-> cases. */
+  function parcFromId(id) {
+    return String(id || "").replace(/^elag-st-(p|v)-/, "");
+  }
+
+  function syncBlock(block) {
+    var cbs = block.querySelectorAll ? block.querySelectorAll("input[data-elag-status]") : [];
+    if (!cbs.length) { return; }
+    var parc = parcFromId(cbs[0].id);
+    var st = (data && data.statuses && data.statuses[parc]) || "";
+    /* maj immediate avec les donnees en cache (statuts exclusifs) */
+    cbs.forEach(function (cb) { cb.checked = (cb.getAttribute("data-elag-status") === st); });
+    var cmt = block.querySelector(".elag-cmt-text");
+    var v = data && data.comments && data.comments[parc];
+    if (cmt && v) {
+      cmt.textContent = String(v.date).slice(0, 10) + " (" + v.author + ") : " + v.text;
+    }
+    /* puis relecture Grist et re-synchro (fiche ouverte = donnee fraiche) */
+    loadData(true).then(function (d) {
+      var st2 = (d.statuses && d.statuses[parc]) || "";
+      var cbs2 = block.querySelectorAll("input[data-elag-status]");
+      cbs2.forEach(function (cb) { cb.checked = (cb.getAttribute("data-elag-status") === st2); });
+      var cmt2 = block.querySelector(".elag-cmt-text");
+      var v2 = d.comments && d.comments[parc];
+      if (cmt2 && v2) {
+        cmt2.textContent = String(v2.date).slice(0, 10) + " (" + v2.author + ") : " + v2.text;
+      }
+      forceRender();
+    });
+  }
+
+  var syncTimer = null;
+  function scheduleSync() {
+    if (syncTimer) { clearTimeout(syncTimer); }
+    syncTimer = setTimeout(function () {
+      syncTimer = null;
+      var blocks = document.querySelectorAll(".elag-cmt-block");
+      blocks.forEach(function (b) { syncBlock(b); });
+    }, 80);
+  }
+
+  if (typeof MutationObserver !== "undefined" && document.body) {
+    new MutationObserver(scheduleSync).observe(document.body, { childList: true, subtree: true });
+  }
+  loadData(true).then(scheduleSync);
+
   /* ---------- affichage commentaire + synchronisation des statuts ---------- */
   window.elagShowComment = function (parc, btn) {
     var block = (btn && btn.closest && btn.closest(".elag-cmt-block")) || document;
@@ -128,7 +178,10 @@
         forceRender();
       })
       .catch(function (e) {
-        if (cb && checked === false) cb.checked = false;
+        /* retour a l'etat reel connu (rollback des coches) */
+        var stR = (data && data.statuses && data.statuses[parc]) || "";
+        var cbsR = block.querySelectorAll ? block.querySelectorAll("input[data-elag-status]") : [];
+        cbsR.forEach(function (c) { c.checked = (c.getAttribute("data-elag-status") === stR); });
         if (msg) { msg.textContent = "Erreur : " + (e.message || e); }
       })
       .finally(function () { cb.disabled = false; });
@@ -168,6 +221,6 @@
         ta.value = "";
       })
       .catch(function (e) { status.textContent = "Erreur : " + (e.message || e); })
-      .finally(function () { btn.disabled = false; });
+      .finally(function (btn) { btn.disabled = false; }.bind(null, btn));
   };
 })();
