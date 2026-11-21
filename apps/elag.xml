@@ -19,7 +19,7 @@
     <searchparameters localities="true" features="true" bbox="false" static="false"/>
 
     <extensions>
-        <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@0170387dec2d5dc30e3f13a42886ac76b860d1b1/apps/js/elag-comments.js"/>
+        <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@8cb7078db3a68879a2a334190ee6767244f87fe4/apps/js/elag-comments.js"/>
     </extensions>
 
     <baselayers style="default">
@@ -94,7 +94,7 @@
                 tooltipenabled="true"
                 tooltipcontent="{{parc}} - {{elag_nom_prop}}"
                 attribution="Données ELAG, Mellionnec et alentours (Côtes-d'Armor)">
-                <template url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@25a3a7b6c9ff7a47ca549851ed606b0c9115703d/apps/templates/parcelle.mst"/>
+                <template url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@8cb7078db3a68879a2a334190ee6767244f87fe4/apps/templates/parcelle.mst"/>
             </layer>
             <layer
                 id="vc_cr"
