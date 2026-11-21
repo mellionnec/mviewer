@@ -2,8 +2,8 @@
  * Lieux-dits de 22146 : affichage texte uniquement (Helvetica 10, noir), sans géométrie.
  * Exclusions : "Brasserie La Grobul'Factory" et "Mellionnec".
  * Source : GeoJSON en Lambert-93 (EPSG:2154), reprojection client via proj4.
- * Chargement via loader ol.source.Vector : indispensable pour que la couche
- * survive au decoche/recoche (mviewer appelle source.refresh() au réaffichage).
+ * Le refresh de la source est surchargé : mviewer appelle getSource().refresh()
+ * au réaffichage de la couche, il doit recharger les entités.
  */
 (function () {
   var LAYER_ID = "lieux_dits";
@@ -26,26 +26,26 @@
     });
   };
 
-  var source = new ol.source.Vector({
-    loader: function (extent, resolution, projection) {
-      fetch(DATA_URL)
-        .then(function (r) { return r.json(); })
-        .then(function (fc) {
-          source.clear();
-          source.addFeatures(new ol.format.GeoJSON().readFeatures(fc, {
-            dataProjection: "EPSG:2154",
-            featureProjection: projection
-          }));
-        })
-        .catch(function (e) { console.log("lieux_dits: erreur de chargement", e); });
-    }
-  });
+  var source = new ol.source.Vector();
 
-  var layer = new ol.layer.Vector({
-    source: source,
-    style: labelStyle,
-    visible: true
-  });
+  function loadFeatures() {
+    var proj = mviewer.getMap().getView().getProjection();
+    fetch(DATA_URL)
+      .then(function (r) { return r.json(); })
+      .then(function (fc) {
+        source.clear();
+        source.addFeatures(new ol.format.GeoJSON().readFeatures(fc, {
+          dataProjection: "EPSG:2154",
+          featureProjection: proj
+        }));
+      })
+      .catch(function (e) { console.log("lieux_dits: erreur de chargement", e); });
+  }
 
+  source.refresh = function () { loadFeatures(); };
+  source.setLoader(function () { loadFeatures(); });
+  loadFeatures();
+
+  var layer = new ol.layer.Vector({ source: source, style: labelStyle, visible: true });
   new CustomLayer(LAYER_ID, layer, {});
 })();
