@@ -19,7 +19,7 @@
     <searchparameters localities="true" features="true" bbox="false" static="false"/>
 
     <extensions>
-        <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@8cb7078db3a68879a2a334190ee6767244f87fe4/apps/js/elag-comments.js"/>
+        <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@180f5448a9c11fc2d98d1f17e2edcd279bf54a30/apps/js/elag-comments.js"/>
     </extensions>
 
     <baselayers style="default">
@@ -72,7 +72,7 @@
                 id="parc_statuts"
                 type="customlayer"
                 name="Statuts des parcelles"
-                url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@91084726416efde2b09e4b37121c9eb2d614db58/apps/customlayers/parc_statuts.js"
+                url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@180f5448a9c11fc2d98d1f17e2edcd279bf54a30/apps/customlayers/parc_statuts.js"
                 visible="true"
                 queryable="false"
                 vectorlegend="true"
@@ -94,7 +94,7 @@
                 tooltipenabled="true"
                 tooltipcontent="{{parc}} - {{elag_nom_prop}}"
                 attribution="Données ELAG, Mellionnec et alentours (Côtes-d'Armor)">
-                <template url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@8cb7078db3a68879a2a334190ee6767244f87fe4/apps/templates/parcelle.mst"/>
+                <template url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@180f5448a9c11fc2d98d1f17e2edcd279bf54a30/apps/templates/parcelle.mst"/>
             </layer>
             <layer
                 id="vc_cr"
