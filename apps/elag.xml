@@ -72,7 +72,7 @@
                 id="parc_statuts"
                 type="customlayer"
                 name="Statuts des parcelles"
-                url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@bb1224157da5892373348d9b3e9ecddcd302d8b1/apps/customlayers/parc_statuts.js"
+                url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@c2726f47a75e123b07a9c178cd2ff802b8992bd8/apps/customlayers/parc_statuts.js"
                 visible="true"
                 queryable="false"
                 vectorlegend="true"
