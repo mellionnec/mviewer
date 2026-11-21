@@ -20,27 +20,28 @@
 
     <baselayers style="default">
         <baselayer
-            type="WMTS"
-            id="planignv2"
-            label="Plan IGN v2"
-            title="Plan IGN v2"
-            url="https://data.geopf.fr/wmts"
-            layers="GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2"
-            format="image/png"
-            style="normal"
-            matrixset="PM"
-            fromcapacity="false"
-            visible="true"
-            maxzoom="19"
-            attribution="IGN, Géoportail"/>
-        <baselayer
             type="OSM"
             id="osm"
             label="OpenStreetMap"
             title="OpenStreetMap"
             url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-            visible="false"
+            format="image/png"
+            visible="true"
             attribution="© OpenStreetMap contributors"/>
+        <baselayer
+            type="WMTS"
+            id="ortho"
+            label="Photo aérienne IGN"
+            title="GéoPortail"
+            url="https://data.geopf.fr/wmts"
+            layers="ORTHOIMAGERY.ORTHOPHOTOS"
+            format="image/jpeg"
+            style="normal"
+            matrixset="PM"
+            fromcapacity="false"
+            visible="false"
+            maxzoom="22"
+            attribution="IGN, Géoportail"/>
     </baselayers>
 
     <themes>
