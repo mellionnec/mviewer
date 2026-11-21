@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <application title="Test E - tooltip + template" showhelp="false" measuretools="true" zoomtools="true" initialextenttool="true" coordinates="false" lang="fr"/>
+    <mapoptions projection="EPSG:3857" center="-366907,6134858" zoom="13" maxzoom="19"/>
+    <baselayers style="default">
+        <baselayer type="OSM" id="osm" label="OpenStreetMap" title="OpenStreetMap" url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" format="image/png" visible="true" attribution="© OpenStreetMap contributors"/>
+    </baselayers>
+    <themes>
+        <theme id="elag-test" name="Parcelles ELAG" collapsed="false" icon="fas fa-leaf">
+            <layer id="parc_elag" type="geojson" name="Parcelles ELAG (75)" url="https://raw.githubusercontent.com/mellionnec/mviewer/main/parc_elag.geojson" visible="true" queryable="true" infoformat="application/vnd.ogc.gml" style="highlight" vectorlegend="true" tooltip="true" tooltipenabled="true" tooltipcontent="{{parc}} - {{elag_nom_prop}}" attribution="Données ELAG">
+                <template url="https://raw.githubusercontent.com/mellionnec/mviewer/main/apps/templates/parcelle.mst"/>
+            </layer>
+        </theme>
+    </themes>
+</config>
