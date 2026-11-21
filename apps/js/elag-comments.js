@@ -2,16 +2,24 @@
  * Extension mviewer : commentaires + statuts partagés par parcelle (ELAG Mellionnec)
  * Stockage : table Grist "Suivi_elagages_view" (doc public docs.getgrist.com bedv66Hzpg9e),
  * appel direct de l'API REST Grist (CORS ouvert, ecriture anonyme activee sur le doc).
- * Statuts : "proprio_ok" (vert), "visite" (orange), sinon rouge (a traiter).
+ * Statuts : "proprio_ok" (vert), "visite" (orange), "non_traite" (rouge), sinon rien.
  * La coloration des parcelles est faite par la couche customlayer "parc_statuts",
  * qui lit window.ELAG_STATUSES maintenu par cette extension.
  */
 (function () {
   var GRIST_URL = "https://docs.getgrist.com/api/docs/bedv66Hzpg9e/tables/Suivi_elagages_view/records";
 
-  var data = null; /* { comments: {parc:{author,date,text}}, statuses: {parc:"proprio_ok"|"visite"}, rowIds: {parc: idGrist} } */
+  var data = null; /* { comments: {parc:{author,date,text}}, statuses: {parc:"proprio_ok"|"visite"|"non_traite"}, rowIds: {parc: idGrist} } */
 
   window.ELAG_STATUSES = window.ELAG_STATUSES || {};
+
+  /* Un statut vaut VRAI si la colonne contient true (case a cocher Grist)
+   * ou la lettre X (ancien format texte). */
+  function flag(v) {
+    if (v === true) { return true; }
+    var s = String(v === null || v === undefined ? "" : v).trim().toUpperCase();
+    return s === "X" || s === "TRUE" || s === "VRAI" || s === "1";
+  }
 
   function loadData(force) {
     if (data && !force) return Promise.resolve(data);
@@ -38,8 +46,9 @@
           if (rowIds[p] === undefined || r.id < rowIds[p]) {
             rowIds[p] = r.id; /* ligne pre-remplie de la parcelle (statuts) */
           }
-          if (String(f.proprietaire_ok || "").trim() === "X") { statuses[p] = "proprio_ok"; }
-          else if (String(f.visite || "").trim() === "X") { statuses[p] = "visite"; }
+          if (flag(f.proprietaire_ok)) { statuses[p] = "proprio_ok"; }
+          else if (flag(f.visite)) { statuses[p] = "visite"; }
+          else if (flag(f.non_traite)) { statuses[p] = "non_traite"; }
         });
         data = { comments: comments, statuses: statuses, rowIds: rowIds };
         return data;
@@ -70,7 +79,7 @@
    * immediatement avec les donnees en cache, puis une seconde fois apres relecture
    * Grist pour garantir la coherence couleur <-> cases. */
   function parcFromId(id) {
-    return String(id || "").replace(/^elag-st-(p|v)-/, "");
+    return String(id || "").replace(/^elag-st-(p|v|n)-/, "");
   }
 
   function syncBlock(block) {
@@ -134,7 +143,7 @@
     });
   };
 
-  /* ---------- enregistrement d'un statut (colonnes proprietaire_ok / visite) ---------- */
+  /* ---------- enregistrement d'un statut (colonnes proprietaire_ok / visite / non_traite) ---------- */
   window.elagSetStatus = function (parc, status, cb) {
     var block = (cb && cb.closest && cb.closest(".elag-cmt-block")) || document;
     var msg = block.querySelector ? block.querySelector(".elag-status-msg") : null;
@@ -152,8 +161,9 @@
     cb.disabled = true;
     if (msg) { msg.textContent = "Enregistrement..."; }
     var fields = {
-      proprietaire_ok: newStatus === "proprio_ok" ? "X" : "",
-      visite: newStatus === "visite" ? "X" : ""
+      proprietaire_ok: newStatus === "proprio_ok",
+      visite: newStatus === "visite",
+      non_traite: newStatus === "non_traite"
     };
     fetch(GRIST_URL, {
       method: "PATCH",
@@ -172,8 +182,10 @@
         });
         if (msg) {
           msg.textContent = st
-            ? (st === "proprio_ok" ? "Enregistré : propriétaire OK (vert)." : "Enregistré : visite à programmer (orange).")
-            : "Statut réinitialisé (rouge).";
+            ? (st === "proprio_ok" ? "Enregistré : propriétaire OK (vert)."
+              : st === "visite" ? "Enregistré : visite à programmer (orange)."
+              : "Enregistré : non traité (rouge).")
+            : "Statut réinitialisé.";
         }
         forceRender();
       })
@@ -221,6 +233,6 @@
         ta.value = "";
       })
       .catch(function (e) { status.textContent = "Erreur : " + (e.message || e); })
-      .finally(function (btn) { btn.disabled = false; }.bind(null, btn));
+      .finally(function (b) { b.disabled = false; }.bind(null, btn));
   };
 })();
