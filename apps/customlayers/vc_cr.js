@@ -5,9 +5,7 @@
  * Le refresh de la source est surcharge (mviewer appelle getSource().refresh()
  * au reaffichage de la couche).
  * Robustesse :
- *  - veille de legende : mviewer.drawVectorLegend() des que l'entree apparait
- *    (la legende vectorielle n'est dessinee qu'a la creation du noeud, course
- *    avec le chargement async du script sinon).
+ *  - veille de legende : mviewer.drawVectorLegend() des que l'entree apparait.
  *  - veille d'enregistrement : si processLayer n'a pas enregistre la couche
  *    apres 2,5 s, on le fait nous-meme pour que la case a cocher reponde.
  *  - traces console [vc_cr] pour diagnostiquer l'affichage.
@@ -96,10 +94,13 @@
 
   var layer = new ol.layer.Vector({ source: source, style: styleFunction, visible: true });
 
+  /* NB : mviewer exige geometry: "LineString" | "Polygon" | "Point" (majuscule),
+   * sinon _drawVectorLegend plante et l'ajout de la couche est interrompu
+   * (case a cocher muette). */
   var legend = {
     items: [
-      { label: "VC - voies communales", geometry: "line", styles: [new ol.style.Style({ stroke: new ol.style.Stroke({ color: VC_COLOR, width: WIDTH }) })] },
-      { label: "CR - chemins ruraux", geometry: "line", styles: [new ol.style.Style({ stroke: new ol.style.Stroke({ color: CR_COLOR, width: WIDTH, lineDash: [10, 8] }) })] }
+      { label: "VC - voies communales", geometry: "LineString", styles: [new ol.style.Style({ stroke: new ol.style.Stroke({ color: VC_COLOR, width: WIDTH }) })] },
+      { label: "CR - chemins ruraux", geometry: "LineString", styles: [new ol.style.Style({ stroke: new ol.style.Stroke({ color: CR_COLOR, width: WIDTH, lineDash: [10, 8] }) })] }
     ]
   };
 
