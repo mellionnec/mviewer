@@ -1,7 +1,7 @@
 /* parc_statuts.js - CustomLayer mviewer
  * Surcouche de coloration des parcelles ELAG selon leur statut :
- *   proprietaire_ok -> vert, visite -> orange, pas de statut -> non dessinee
- * (le contour rouge de la couche parc_elag reste visible en dessous).
+ *   proprietaire_ok -> vert, visite -> orange, non_traite -> rouge,
+ *   pas de statut -> non dessinee (seul le contour parc_elag reste).
  * Les statuts viennent de window.ELAG_STATUSES, maintenu par l'extension elag-comments.js
  * (table Grist Suivi_elagages_view).
  * Reconstruction complete des entites a chaque changement + changed() en secours.
@@ -11,8 +11,9 @@
   var GEOJSON_URL = "https://raw.githubusercontent.com/mellionnec/mviewer/main/parc_elag.geojson";
 
   var COLORS = {
-    proprio_ok: { stroke: "#009900", width: 2.5, fill: "rgba(0,153,0,0.35)" },
-    visite:     { stroke: "#FF8C00", width: 2.5, fill: "rgba(255,140,0,0.35)" }
+    proprio_ok:  { stroke: "#009900", width: 2.5, fill: "rgba(0,153,0,0.35)" },
+    visite:      { stroke: "#FF8C00", width: 2.5, fill: "rgba(255,140,0,0.35)" },
+    non_traite:  { stroke: "#FF0000", width: 2.5, fill: "rgba(255,0,0,0.18)" }
   };
 
   var rawGeojson = null;
@@ -31,7 +32,7 @@
     });
     var visible = feats.filter(function (f) {
       var st = statuses[f.get("parc")];
-      return st === "proprio_ok" || st === "visite";
+      return st === "proprio_ok" || st === "visite" || st === "non_traite";
     });
     source.clear(true);
     source.addFeatures(visible);
@@ -60,7 +61,7 @@
 
   var legend = {
     items: [
-      { label: "À traiter", geometry: "polygon", styles: [new ol.style.Style({ stroke: new ol.style.Stroke({ color: "#FF0000", width: 2 }), fill: new ol.style.Fill({ color: "rgba(255,0,0,0)" }) })] },
+      { label: "Non traité", geometry: "polygon", styles: [new ol.style.Style({ stroke: new ol.style.Stroke({ color: COLORS.non_traite.stroke, width: COLORS.non_traite.width }), fill: new ol.style.Fill({ color: COLORS.non_traite.fill }) })] },
       { label: "Propriétaire OK", geometry: "polygon", styles: [new ol.style.Style({ stroke: new ol.style.Stroke({ color: COLORS.proprio_ok.stroke, width: COLORS.proprio_ok.width }), fill: new ol.style.Fill({ color: COLORS.proprio_ok.fill }) })] },
       { label: "Visite à programmer", geometry: "polygon", styles: [new ol.style.Style({ stroke: new ol.style.Stroke({ color: COLORS.visite.stroke, width: COLORS.visite.width }), fill: new ol.style.Fill({ color: COLORS.visite.fill }) })] }
     ]

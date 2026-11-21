@@ -18,6 +18,10 @@
         <input class="form-check-input" type="checkbox" id="elag-st-v-{{parc}}" data-elag-status="visite" onchange="elagSetStatus('{{parc}}','visite',this)">
         <label class="form-check-label" for="elag-st-v-{{parc}}">Visite à programmer</label>
       </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="elag-st-n-{{parc}}" data-elag-status="non_traite" onchange="elagSetStatus('{{parc}}','non_traite',this)">
+        <label class="form-check-label" for="elag-st-n-{{parc}}">Non traité</label>
+      </div>
       <div class="elag-status-msg" style="font-size:0.85em;color:#555"></div>
       <hr/>
       Commentaire partagé :
