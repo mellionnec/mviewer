@@ -73,6 +73,24 @@
                 attribution="Données ELAG, Mellionnec et alentours (Côtes-d'Armor)">
                 <template url="https://raw.githubusercontent.com/mellionnec/mviewer/main/apps/templates/parcelle.mst"/>
             </layer>
+            <layer
+                id="vc_cr"
+                type="customlayer"
+                name="Voies communales et chemins ruraux"
+                url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@main/apps/customlayers/vc_cr.js"
+                visible="true"
+                queryable="true"
+                vectorlegend="true"
+                attribution="Voirie communale et rurale, commune de Mellionnec"/>
+            <layer
+                id="lieux_dits"
+                type="customlayer"
+                name="Lieux-dits"
+                url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@main/apps/customlayers/lieux_dits.js"
+                visible="true"
+                queryable="false"
+                vectorlegend="false"
+                attribution="Lieux-dits (OpenStreetMap)"/>
         </theme>
     </themes>
 </config>
