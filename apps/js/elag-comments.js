@@ -1,16 +1,17 @@
 /* elag-comments.js
  * Extension mviewer : commentaires partagés par parcelle (ELAG Mellionnec)
- * Compatible avec le worker Cloudflare 'elag-comments' (voir workers/elag-comments.js)
+ * Stockage : Google Sheet "elag-commentaires" via un script Apps Script publié en Web App.
+ * Voir docs/COMMENTAIRES-GOOGLE-SHEETS.md pour la mise en place.
  */
 (function () {
-  // ⚠️ À ADAPTER : URL de votre Cloudflare Worker après déploiement
-  var ELAG_API = "https://elag-comments.VOTRE-COMPTE.workers.dev";
+  // ⚠️ À ADAPTER : URL de votre Web App Apps Script (déployée)
+  var ELAG_API = "URL_WEB_APP_A_COLLER";
 
   var commentsCache = null;
 
-  function loadComments() {
-    if (commentsCache) return Promise.resolve(commentsCache);
-    return fetch(ELAG_API + "/comments")
+  function loadComments(force) {
+    if (commentsCache && !force) return Promise.resolve(commentsCache);
+    return fetch(ELAG_API)
       .then(function (r) { return r.json(); })
       .then(function (j) { commentsCache = j || { comments: {} }; return commentsCache; })
       .catch(function () { commentsCache = { comments: {} }; return commentsCache; });
@@ -19,7 +20,7 @@
   window.elagShowComment = function (parc) {
     var div = document.getElementById("elag-cmt-" + parc);
     if (!div) return;
-    loadComments().then(function (c) {
+    loadComments(true).then(function (c) {
       var v = c.comments && c.comments[parc];
       div.textContent = v
         ? v.date.slice(0, 10) + " (" + v.author + ") : " + v.text
@@ -37,13 +38,16 @@
     if (!text) { status.textContent = "Le commentaire est vide."; return; }
     btn.disabled = true;
     status.textContent = "Enregistrement...";
-    fetch(ELAG_API + "/comment", {
+    // Content-Type texte brut volontaire : évite la requête CORS "preflight"
+    // que les Web Apps Apps Script ne gèrent pas.
+    fetch(ELAG_API, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify({ id: parc, text: text.slice(0, 500), author: author.slice(0, 50) })
     })
       .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.error || r.status); return j; }); })
       .then(function (resp) {
+        if (!resp.ok) throw new Error(resp.error || "erreur");
         if (!commentsCache) commentsCache = { comments: {} };
         commentsCache.comments[parc] = resp.comment;
         status.textContent = "Enregistré.";
