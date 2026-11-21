@@ -7,7 +7,8 @@
         zoomtools="true"
         initialextenttool="true"
         coordinates="false"
-        lang="fr"/>
+        lang="fr"
+        style="css/themes/green.css"/>
 
     <mapoptions
         projection="EPSG:3857"
@@ -19,7 +20,7 @@
     <searchparameters localities="true" features="true" bbox="false" static="false"/>
 
     <extensions>
-        <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@180f5448a9c11fc2d98d1f17e2edcd279bf54a30/apps/js/elag-comments.js"/>
+        <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@34d828c282bc848731b4248ad17cd89919abe5b5/apps/js/elag-comments.js"/>
     </extensions>
 
     <baselayers style="default">
@@ -69,6 +70,15 @@
             collapsed="false"
             icon="fas fa-leaf">
             <layer
+                id="commune"
+                type="geojson"
+                name="Contour de la commune"
+                url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@acc8d131bbbb73855eb3f6fbd815cade90c98d0f/mellionnec.geojson"
+                visible="true"
+                queryable="false"
+                vectorlegend="true"
+                attribution="IGN AdminExpress via GéoBretagne"/>
+            <layer
                 id="parc_statuts"
                 type="customlayer"
                 name="Statuts des parcelles"
@@ -94,7 +104,7 @@
                 tooltipenabled="true"
                 tooltipcontent="{{parc}} - {{elag_nom_prop}}"
                 attribution="Données ELAG, Mellionnec et alentours (Côtes-d'Armor)">
-                <template url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@62363d5844cea7ead30877a1ab487639b6583656/apps/templates/parcelle.mst"/>
+                <template url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@34d828c282bc848731b4248ad17cd89919abe5b5/apps/templates/parcelle.mst"/>
             </layer>
             <layer
                 id="vc_cr"
