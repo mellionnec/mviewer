@@ -33,13 +33,26 @@
     });
   };
 
-  var styleTimer = setInterval(function () {
-    var olLayer = (typeof mviewer !== "undefined" && mviewer.getLayer && mviewer.getLayer("parc_elag") || {}).layer;
-    if (olLayer) {
-      olLayer.setStyle(parcStyle);
-      clearInterval(styleTimer);
-    }
-  }, 500);
+  function parcLayer() {
+    return (typeof mviewer !== "undefined" && mviewer.getLayer && mviewer.getLayer("parc_elag") || {}).layer || null;
+  }
+
+  /* force OpenLayers a redessiner (le style est une fonction : sans changed(), pas de re-rendu) */
+  function repareStyleEtRedessine() {
+    var l = parcLayer();
+    if (!l) { return; }
+    if (l.getStyle() !== parcStyle) { l.setStyle(parcStyle); }
+    l.changed();
+  }
+
+  /* garde-fou : re-applique le style s'il a ete ecrase par mviewer (creation de la couche, refresh...) */
+  setInterval(function () {
+    var l = parcLayer();
+    if (l && l.getStyle() !== parcStyle) { l.setStyle(parcStyle); l.changed(); }
+  }, 1000);
+
+  /* chargement initial des statuts puis coloration */
+  loadData(true).then(function () { repareStyleEtRedessine(); });
 
   /* ---------- affichage commentaire + synchronisation des statuts ---------- */
   window.elagShowComment = function (parc, btn) {
@@ -57,6 +70,7 @@
       cbs.forEach(function (cb) {
         cb.checked = (cb.getAttribute("data-elag-status") === st);
       });
+      repareStyleEtRedessine();
     });
   };
 
@@ -87,6 +101,8 @@
             ? (resp.status === "proprio_ok" ? "Enregistré : propriétaire OK (vert)." : "Enregistré : visite à programmer (orange).")
             : "Statut réinitialisé (rouge).";
         }
+        /* re-coloration immediate du polygone */
+        repareStyleEtRedessine();
       })
       .catch(function (e) {
         if (cb && checked === false) cb.checked = false;
