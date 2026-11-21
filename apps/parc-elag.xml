@@ -1,7 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <config>
     <application
         title="Parcelles ELAG Mellionnec"
-        htmltitle="Parcelles ELAG - Mellionnec (22)"
         showhelp="false"
         measuretools="true"
         exportpng="false"
@@ -16,21 +16,24 @@
         zoom="13"
         maxzoom="19"/>
 
-    <olscompletion url="https://data.geopf.fr/geocodage/search" type="search" attribution="Géocodage IGN / BAN"/>
+    <olscompletion url="https://data.geopf.fr/geocodage/completion" type="completion" attribution="Service d'autocomplétion de l'IGN"/>
     <searchparameters localities="true" features="true" bbox="false" static="false" searchmaxzoomlevel="16"/>
 
     <baselayers style="default">
         <baselayer
-            type="WMS"
+            type="WMTS"
             id="planignv2"
             label="Plan IGN v2"
             title="Plan IGN v2"
-            name="PLAN.IGN"
-            url="https://geoservices.ign.fr/plan/ows"
+            url="https://data.geopf.fr/wmts"
+            layers="GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2"
             format="image/png"
-            attribution="IGN"
+            style="normal"
+            matrixset="PM"
+            fromcapacity="false"
             visible="true"
-            style="normal"/>
+            maxzoom="19"
+            attribution="IGN, Géoportail"/>
     </baselayers>
 
     <themes>
@@ -48,7 +51,6 @@
                 queryable="true"
                 style="highlight"
                 vectorlegend="true"
-                legendurl=""
                 fields="parc,commune,contenance,arpente,created,updated,elag_nom_prop,elag_adresse_prop,elag_commentaire"
                 aliases="Parcelle,Code INSEE,Contenance (m2),Arpentée,Créée le,Mise à jour,Propriétaire,Adresse propriétaire,Commentaire"
                 searchable="true"
@@ -59,7 +61,7 @@
                 tooltip="true"
                 tooltipenabled="true"
                 tooltipcontent="{{parc}} &lt;br/&gt;{{elag_nom_prop}}"
-                attribution="Données ELAG, communes de Mellionnec et alentours (Côtes-d'Armor)"/>
+                attribution="Données ELAG, Mellionnec et alentours (Côtes-d'Armor)"/>
         </theme>
     </themes>
 </config>
