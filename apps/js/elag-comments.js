@@ -73,37 +73,39 @@
 
   loadData(true).then(forceRender);
 
-  /* ---------- synchro automatique : une fiche affichee = cases deja coherentes ----------
+  /* ---------- synchro automatique : une fiche affichee = select deja coherent ----------
    * Un observer surveille le panneau : des qu'un bloc .elag-cmt-block apparait
-   * (ouverture d'une fiche parcelle), on coche/decoche selon l'etat reel de la table,
-   * immediatement avec les donnees en cache, puis une seconde fois apres relecture
-   * Grist pour garantir la coherence couleur <-> cases. */
+   * (ouverture d'une fiche parcelle), on positionne le menu deroulant de statut selon
+   * l'etat reel de la table, immediatement avec les donnees en cache, puis une seconde
+   * fois apres relecture Grist pour garantir la coherence couleur <-> select. */
+  function setBlockStatus(block, st) {
+    var sel = block.querySelector ? block.querySelector("select[data-elag-status-select]") : null;
+    if (!sel) { return; }
+    sel.value = ["proprio_ok", "visite", "non_traite"].indexOf(st) > -1 ? st : "";
+  }
+
   function parcFromId(id) {
-    return String(id || "").replace(/^elag-st-(p|v|n)-/, "");
+    return String(id || "").replace(/^elag-st-/, "");
   }
 
   function syncBlock(block) {
-    var cbs = block.querySelectorAll ? block.querySelectorAll("input[data-elag-status]") : [];
-    if (!cbs.length) { return; }
-    var parc = parcFromId(cbs[0].id);
-    var st = (data && data.statuses && data.statuses[parc]) || "";
-    /* maj immediate avec les donnees en cache (statuts exclusifs) */
-    cbs.forEach(function (cb) { cb.checked = (cb.getAttribute("data-elag-status") === st); });
+    var sel = block.querySelector ? block.querySelector("select[data-elag-status-select]") : null;
+    if (!sel) { return; }
+    var parc = parcFromId(sel.id);
     var cmt = block.querySelector(".elag-cmt-text");
-    var v = data && data.comments && data.comments[parc];
-    if (cmt && v) {
-      cmt.textContent = String(v.date).slice(0, 10) + " (" + v.author + ") : " + v.text;
+    function apply(d) {
+      var st = (d && d.statuses && d.statuses[parc]) || "";
+      setBlockStatus(block, st);
+      var v = d && d.comments && d.comments[parc];
+      if (cmt && v) {
+        cmt.textContent = String(v.date).slice(0, 10) + " (" + v.author + ") : " + v.text;
+      }
     }
+    /* maj immediate avec les donnees en cache (statuts exclusifs) */
+    apply(data);
     /* puis relecture Grist et re-synchro (fiche ouverte = donnee fraiche) */
     loadData(true).then(function (d) {
-      var st2 = (d.statuses && d.statuses[parc]) || "";
-      var cbs2 = block.querySelectorAll("input[data-elag-status]");
-      cbs2.forEach(function (cb) { cb.checked = (cb.getAttribute("data-elag-status") === st2); });
-      var cmt2 = block.querySelector(".elag-cmt-text");
-      var v2 = d.comments && d.comments[parc];
-      if (cmt2 && v2) {
-        cmt2.textContent = String(v2.date).slice(0, 10) + " (" + v2.author + ") : " + v2.text;
-      }
+      apply(d);
       forceRender();
     });
   }
@@ -135,30 +137,27 @@
           : "(aucun commentaire enregistré pour cette parcelle)";
       }
       var st = (d.statuses && d.statuses[parc]) || "";
-      var cbs = block.querySelectorAll ? block.querySelectorAll("input[data-elag-status]") : [];
-      cbs.forEach(function (cb) {
-        cb.checked = (cb.getAttribute("data-elag-status") === st);
-      });
+      setBlockStatus(block, st);
       forceRender();
     });
   };
 
-  /* ---------- enregistrement d'un statut (colonnes proprietaire_ok / visite / non_traite) ---------- */
-  window.elagSetStatus = function (parc, status, cb) {
-    var block = (cb && cb.closest && cb.closest(".elag-cmt-block")) || document;
+  /* ---------- enregistrement d'un statut (colonnes proprietaire_ok / visite / non_traite) ----------
+   * "status" est la valeur du menu deroulant : "proprio_ok" | "visite" | "non_traite" | "" (aucun). */
+  window.elagSetStatus = function (parc, status, sel) {
+    var block = (sel && sel.closest && sel.closest(".elag-cmt-block")) || document;
     var msg = block.querySelector ? block.querySelector(".elag-status-msg") : null;
-    var checked = cb && cb.checked;
-    var newStatus = checked ? status : "";
+    var newStatus = ["proprio_ok", "visite", "non_traite"].indexOf(status) > -1 ? status : "";
     var rid = data && data.rowIds && data.rowIds[parc];
     if (!rid) {
       /* la table a pu evoluer : on recharge une fois avant d'abandonner */
       loadData(true).then(function (d) {
-        if (d.rowIds && d.rowIds[parc]) { window.elagSetStatus(parc, status, cb); }
+        if (d.rowIds && d.rowIds[parc]) { window.elagSetStatus(parc, status, sel); }
         else if (msg) { msg.textContent = "Erreur : parcelle inconnue dans la table Grist."; }
       });
       return;
     }
-    cb.disabled = true;
+    sel.disabled = true;
     if (msg) { msg.textContent = "Enregistrement..."; }
     var fields = {
       proprietaire_ok: newStatus === "proprio_ok",
@@ -176,10 +175,7 @@
       .then(function () { return loadData(true); })
       .then(function (d) {
         var st = (d.statuses && d.statuses[parc]) || "";
-        var cbs = block.querySelectorAll ? block.querySelectorAll("input[data-elag-status]") : [];
-        cbs.forEach(function (c) {
-          c.checked = (c.getAttribute("data-elag-status") === st);
-        });
+        setBlockStatus(block, st);
         if (msg) {
           msg.textContent = st
             ? (st === "proprio_ok" ? "Enregistré : propriétaire OK (vert)."
@@ -190,13 +186,12 @@
         forceRender();
       })
       .catch(function (e) {
-        /* retour a l'etat reel connu (rollback des coches) */
+        /* retour a l'etat reel connu (rollback du select) */
         var stR = (data && data.statuses && data.statuses[parc]) || "";
-        var cbsR = block.querySelectorAll ? block.querySelectorAll("input[data-elag-status]") : [];
-        cbsR.forEach(function (c) { c.checked = (c.getAttribute("data-elag-status") === stR); });
+        setBlockStatus(block, stR);
         if (msg) { msg.textContent = "Erreur : " + (e.message || e); }
       })
-      .finally(function () { cb.disabled = false; });
+      .finally(function () { sel.disabled = false; });
   };
 
   /* ---------- enregistrement d'un commentaire (nouvelle ligne = historique) ---------- */
@@ -235,4 +230,38 @@
       .catch(function (e) { status.textContent = "Erreur : " + (e.message || e); })
       .finally(function (b) { b.disabled = false; }.bind(null, btn));
   };
+
+  /* ---------- style de la couche parcelle : trait fin pointille gris fonce ---------- */
+  function parcelleStyle() {
+    return new ol.style.Style({
+      stroke: new ol.style.Stroke({ color: "#4d4d4d", width: 1.25, lineDash: [5, 4] }),
+      fill: new ol.style.Fill({ color: "rgba(0,0,0,0)" })
+    });
+  }
+
+  function applyParcelleStyle() {
+    try {
+      var o = window.mviewer && window.mviewer.getLayer && window.mviewer.getLayer("parc_elag");
+      var l = o && o.layer;
+      if (!l || !l.setStyle) { return false; }
+      l.setStyle(parcelleStyle());
+      try {
+        window.mviewer.drawVectorLegend("parc_elag", [{
+          label: "Parcelle ELAG",
+          geometry: "Polygon",
+          styles: [parcelleStyle()]
+        }]);
+      } catch (e) { console.log("elag: legende parcelle non dessinee", e); }
+      console.log("elag: style parcelle applique (pointille gris)");
+      return true;
+    } catch (e) {
+      console.log("elag: erreur application style parcelle", e);
+      return true; /* ne pas boucler sur une erreur permanente */
+    }
+  }
+
+  var styleTries = 0;
+  var styleTimer = setInterval(function () {
+    if (applyParcelleStyle() || ++styleTries > 200) { clearInterval(styleTimer); }
+  }, 250);
 })();
