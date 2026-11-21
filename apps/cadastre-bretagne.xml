@@ -1,10 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <config>
     <application
         title="Cadastre Bretagne"
-        style="css/themes/theme.css"
         showhelp="false"
         measuretools="true"
-        exportpng="true"
+        exportpng="false"
         lang="fr"/>
 
     <map
@@ -14,6 +14,7 @@
         maxzoom="19"
         projection="EPSG:3857"/>
 
+    <olscompletion url="https://data.geopf.fr/geocodage/completion" type="completion" attribution="Service d'autocompletion de l'IGN"/>
     <searchparameters bbox="false" localities="true" features="true" static="false"/>
 
     <baselayers>
@@ -28,15 +29,19 @@
             attribution="© OpenStreetMap contributors"
             visible="true"/>
         <baselayer
-            type="WMS"
-            id="planign"
-            label="Plan IGN"
-            title="Plan IGN"
-            name="PLAN.IGN"
-            url="https://geoservices.ign.fr/plan/ows"
+            type="WMTS"
+            id="planignv2"
+            label="Plan IGN v2"
+            title="Plan IGN v2"
+            url="https://data.geopf.fr/wmts"
+            layers="GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2"
             format="image/png"
-            attribution="IGN"
-            visible="false"/>
+            style="normal"
+            matrixset="PM"
+            fromcapacity="false"
+            visible="false"
+            maxzoom="19"
+            attribution="IGN, Géoportail"/>
     </baselayers>
 
     <themes>
