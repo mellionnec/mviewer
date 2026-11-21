@@ -14,12 +14,23 @@
     </table>
     <hr/>
     <div class="elag-cmt-block">
+      <b>🧭 Statut de la parcelle :</b>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="elag-st-p-{{parc}}" data-elag-status="proprio_ok" onchange="elagSetStatus('{{parc}}','proprio_ok',this)">
+        <label class="form-check-label" for="elag-st-p-{{parc}}">✅ Propriétaire OK (parcelle en vert)</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="elag-st-v-{{parc}}" data-elag-status="visite" onchange="elagSetStatus('{{parc}}','visite',this)">
+        <label class="form-check-label" for="elag-st-v-{{parc}}">🚶 Visite à programmer (parcelle en orange)</label>
+      </div>
+      <div class="elag-status-msg" style="font-size:0.85em;color:#555"></div>
+      <hr/>
       <b>💬 Commentaire partagé :</b>
-      <div id="elag-cmt-{{parc}}" class="elag-cmt-text">Cliquez sur « Voir » pour afficher le dernier commentaire enregistré.</div>
+      <div id="elag-cmt-{{parc}}" class="elag-cmt-text">Cliquez sur « Actualiser » pour afficher le commentaire et le statut enregistrés.</div>
       <div style="margin-top:6px">
         <input type="text" class="elag-cmt-author form-control form-control-sm" placeholder="Votre nom (optionnel)" style="max-width:220px"/>
         <textarea class="elag-cmt-input form-control" rows="2" placeholder="Votre commentaire sur cette parcelle..."></textarea>
-        <button type="button" class="btn btn-sm btn-info mt-1" onclick="elagShowComment('{{parc}}', this)">👁 Voir</button>
+        <button type="button" class="btn btn-sm btn-info mt-1" onclick="elagShowComment('{{parc}}', this)">🔄 Actualiser</button>
         <button type="button" class="btn btn-sm btn-success mt-1" onclick="elagSaveComment('{{parc}}', this)">💾 Enregistrer</button>
         <span class="elag-cmt-status"></span>
       </div>

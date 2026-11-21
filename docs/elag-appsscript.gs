@@ -1,17 +1,27 @@
 /**
- * COMMENTAIRES ELAG - mviewer (Google Apps Script)
+ * COMMENTAIRES + STATUTS ELAG - mviewer (Google Apps Script)
  *
  * À coller dans le tableur : Extensions > Apps Script, remplacer le contenu par ce fichier,
- * puis Déployer > Nouveau déploiement > type "Application Web" :
- *   - Exécuter en tant que : Moi
- *   - Accès : Tous
- * Copier l'URL du déploiement (....exec) et la renseigner dans apps/js/elag-comments.js.
+ * puis Déployer > Gérer les déploiements > (crayon) > Version : "Nouvelle version" > Déployer
+ * (l'URL du déploiement existant est conservée).
  *
- * GET  (URL Web App)          -> { comments: { "WA21": {author, date, text}, ... } }
- * POST (corps JSON {id,text,author}) -> ajoute une ligne dans la première feuille
+ * GET  -> { comments: { "WA21": {author,date,text}, ... }, statuses: { "WA21": "proprio_ok"|"visite", ... } }
+ * POST {id,text,author}            -> ajoute un commentaire (première feuille)
+ * POST {action:"status",id,status} -> statut de parcelle (feuille "statuts", créée automatiquement)
+ *        status : "proprio_ok" (vert) | "visite" (orange) | "" (retour au rouge)
  */
 function sheet_() {
   return SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
+}
+
+function statusSheet_() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sh = ss.getSheetByName("statuts");
+  if (!sh) {
+    sh = ss.insertSheet("statuts");
+    sh.appendRow(["parcelle", "statut", "date"]);
+  }
+  return sh;
 }
 
 function out_(obj) {
@@ -27,19 +37,39 @@ function doGet(e) {
     if (!parc) continue;
     var text = String(rows[i][3] || "").trim();
     if (!text) continue;
-    // les lignes étant ajoutées, la dernière occurrence gagne (dernier commentaire)
     comments[String(parc)] = {
       author: String(rows[i][1] || "anonyme"),
       date: String(rows[i][2] || ""),
       text: text.slice(0, 500)
     };
   }
-  return out_({ comments: comments });
+  var statuses = {};
+  var srows = statusSheet_().getDataRange().getValues();
+  for (var j = 1; j < srows.length; j++) {
+    var p = String(srows[j][0]);
+    if (!p) continue;
+    var s = String(srows[j][1] || "").trim();
+    /* la dernière occurrence gagne ; statut vide = retour au rouge */
+    if (s) { statuses[p] = s; } else { delete statuses[p]; }
+  }
+  return out_({ comments: comments, statuses: statuses });
 }
 
 function doPost(e) {
   try {
     var b = JSON.parse(e.postData.contents);
+
+    /* ----- action : statut de parcelle ----- */
+    if (b.action === "status") {
+      var sid = String(b.id || "");
+      var status = String(b.status || "");
+      if (!/^[0-9A-Z]{4,20}$/.test(sid)) throw new Error("identifiant de parcelle invalide");
+      if (["proprio_ok", "visite", ""].indexOf(status) === -1) throw new Error("statut invalide");
+      statusSheet_().appendRow([sid, status, new Date().toISOString()]);
+      return out_({ ok: true, status: status });
+    }
+
+    /* ----- action par défaut : commentaire ----- */
     var id = String(b.id || "");
     var text = String(b.text || "").slice(0, 500).trim();
     var author = String(b.author || "anonyme").slice(0, 50).trim() || "anonyme";

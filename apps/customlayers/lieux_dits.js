@@ -1,7 +1,9 @@
 /* lieux_dits.js - CustomLayer mviewer
  * Lieux-dits de 22146 : affichage texte uniquement (Helvetica 10, noir), sans géométrie.
- * Exclusions demandées : "Brasserie La Grobul'Factory" et "Mellionnec".
+ * Exclusions : "Brasserie La Grobul'Factory" et "Mellionnec".
  * Source : GeoJSON en Lambert-93 (EPSG:2154), reprojection client via proj4.
+ * Chargement via loader ol.source.Vector : indispensable pour que la couche
+ * survive au decoche/recoche (mviewer appelle source.refresh() au réaffichage).
  */
 (function () {
   var LAYER_ID = "lieux_dits";
@@ -11,7 +13,6 @@
   proj4.defs("EPSG:2154", "+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +units=m +no_defs");
   if (ol.proj.proj4 && ol.proj.proj4.register) { ol.proj.proj4.register(proj4); }
 
-  /* Style : uniquement une étiquette texte, pas de géométrie visible */
   var labelStyle = function (feature) {
     var name = feature.get("name");
     if (!name || EXCLUDE.indexOf(name) !== -1) { return null; }
@@ -25,22 +26,26 @@
     });
   };
 
-  var source = new ol.source.Vector();
+  var source = new ol.source.Vector({
+    loader: function (extent, resolution, projection) {
+      fetch(DATA_URL)
+        .then(function (r) { return r.json(); })
+        .then(function (fc) {
+          source.clear();
+          source.addFeatures(new ol.format.GeoJSON().readFeatures(fc, {
+            dataProjection: "EPSG:2154",
+            featureProjection: projection
+          }));
+        })
+        .catch(function (e) { console.log("lieux_dits: erreur de chargement", e); });
+    }
+  });
+
   var layer = new ol.layer.Vector({
     source: source,
     style: labelStyle,
     visible: true
   });
-
-  fetch(DATA_URL)
-    .then(function (r) { return r.json(); })
-    .then(function (fc) {
-      source.addFeatures(new ol.format.GeoJSON().readFeatures(fc, {
-        dataProjection: "EPSG:2154",
-        featureProjection: mviewer.getMap().getView().getProjection()
-      }));
-    })
-    .catch(function (e) { console.log("lieux_dits: erreur de chargement", e); });
 
   new CustomLayer(LAYER_ID, layer, {});
 })();

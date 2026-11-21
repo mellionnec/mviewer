@@ -1,13 +1,16 @@
 /* vc_cr.js - CustomLayer mviewer
  * Voiries de 22146 : VC (voies communales) en mauve avec numéro,
- * CR (chemins ruraux) en vert pointillé avec numéro.
+ * CR (chemins ruraux) en vert fluo pointillé avec numéro.
  * Source : GeoJSON en Lambert-93 (EPSG:2154), reprojection client via proj4.
+ * Chargement via loader ol.source.Vector : indispensable pour que la couche
+ * survive au decoche/recoche (mviewer appelle source.refresh() au réaffichage).
  */
 (function () {
   var LAYER_ID = "vc_cr";
-  var DATA_URL = "https://raw.githubusercontent.com/mellionnec/mviewer/main/vc_cr_22146.geojson";
+  DATA_URL = "https://raw.githubusercontent.com/mellionnec/mviewer/main/vc_cr_22146.geojson";
   var VC_COLOR = "#A020F0";
-  var CR_COLOR = "#007A3D";
+  var CR_COLOR = "#00FF00";
+  var WIDTH = 3;
 
   proj4.defs("EPSG:2154", "+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +units=m +no_defs");
   if (ol.proj.proj4 && ol.proj.proj4.register) { ol.proj.proj4.register(proj4); }
@@ -18,19 +21,17 @@
     if (!g || (type !== "VC" && type !== "CR")) { return null; }
     var num = feature.get("nom_complet") || String(type) + String(feature.get("numero") || "");
     var color = (type === "VC") ? VC_COLOR : CR_COLOR;
-    var dash = (type === "CR") ? [8, 6] : undefined;
+    var dash = (type === "CR") ? [10, 8] : undefined;
 
     var styles = [
       new ol.style.Style({
-        stroke: new ol.style.Stroke({ color: color, width: 2, lineDash: dash })
+        stroke: new ol.style.Stroke({ color: color, width: WIDTH, lineDash: dash })
       })
     ];
 
-    /* étiquette au milieu de la plus longue partie de la géométrie */
     var line = null;
-    if (g.getType() === "LineString") {
-      line = g;
-    } else if (g.getType() === "MultiLineString") {
+    if (g.getType() === "LineString") { line = g; }
+    else if (g.getType() === "MultiLineString") {
       var best = null, bestLen = -1;
       g.getLineStrings().forEach(function (l) {
         if (l.getLength() > bestLen) { bestLen = l.getLength(); best = l; }
@@ -44,33 +45,37 @@
           font: "bold 10px Helvetica, Arial, sans-serif",
           text: num,
           fill: new ol.style.Fill({ color: color }),
-          stroke: new ol.style.Stroke({ color: "#FFFFFF", width: 2 }),
-          offsetY: -8
+          stroke: new ol.style.Stroke({ color: "#000000", width: 2 }),
+          offsetY: -10
         })
       }));
     }
     return styles;
   };
 
-  var source = new ol.source.Vector();
+  var source = new ol.source.Vector({
+    loader: function (extent, resolution, projection) {
+      fetch(DATA_URL)
+        .then(function (r) { return r.json(); })
+        .then(function (fc) {
+          source.clear();
+          source.addFeatures(new ol.format.GeoJSON().readFeatures(fc, {
+            dataProjection: "EPSG:2154",
+            featureProjection: projection
+          }));
+        })
+        .catch(function (e) { console.log("vc_cr: erreur de chargement", e); });
+    }
+  });
+
   var layer = new ol.layer.Vector({ source: source, style: styleFunction, visible: true });
 
   var legend = {
     items: [
-      { label: "VC - voies communales", geometry: "line", styles: [new ol.style.Style({ stroke: new ol.style.Stroke({ color: VC_COLOR, width: 2 }) })] },
-      { label: "CR - chemins ruraux (pointillés)", geometry: "line", styles: [new ol.style.Style({ stroke: new ol.style.Stroke({ color: CR_COLOR, width: 2, lineDash: [8, 6] }) })] }
+      { label: "VC - voies communales", geometry: "line", styles: [new ol.style.Style({ stroke: new ol.style.Stroke({ color: VC_COLOR, width: WIDTH }) })] },
+      { label: "CR - chemins ruraux (vert fluo, pointillés)", geometry: "line", styles: [new ol.style.Style({ stroke: new ol.style.Stroke({ color: CR_COLOR, width: WIDTH, lineDash: [10, 8] }) })] }
     ]
   };
-
-  fetch(DATA_URL)
-    .then(function (r) { return r.json(); })
-    .then(function (fc) {
-      source.addFeatures(new ol.format.GeoJSON().readFeatures(fc, {
-        dataProjection: "EPSG:2154",
-        featureProjection: mviewer.getMap().getView().getProjection()
-      }));
-    })
-    .catch(function (e) { console.log("vc_cr: erreur de chargement", e); });
 
   new CustomLayer(LAYER_ID, layer, legend);
 })();
