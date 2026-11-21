@@ -13,9 +13,9 @@
       <select class="form-control form-control-sm" id="elag-st-{{parc}}" data-elag-status-select
               style="max-width:260px" onchange="elagSetStatus('{{parc}}', this.value, this)">
         <option value="">— Aucun statut —</option>
-        <option value="proprio_ok">Propriétaire OK</option>
-        <option value="visite">Visite à programmer</option>
-        <option value="non_traite">Propriétaire NON</option>
+        <option value="proprio_ok" style="background-color:#009900;color:#fff;font-weight:bold">Propriétaire OK</option>
+        <option value="visite" style="background-color:#FF8C00;color:#fff;font-weight:bold">Visite à programmer</option>
+        <option value="non_traite" style="background-color:#FF0000;color:#fff;font-weight:bold">Propriétaire NON</option>
       </select>
       <div class="elag-status-msg" style="font-size:0.85em;color:#555"></div>
       <hr/>
