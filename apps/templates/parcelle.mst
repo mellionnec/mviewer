@@ -1,3 +1,15 @@
+<style>
+/* Compatibilite mobile / tablette : police 16px pour eviter le zoom auto iOS,
+   largeurs fluides, boutons sur une seule ligne tant que possible. */
+.elag-cmt-block select,
+.elag-cmt-block textarea { max-width: 100%; }
+.elag-cmt-block .form-control { border-radius: 4px; }
+@media (max-width: 767px) {
+  .elag-cmt-block select,
+  .elag-cmt-block textarea { font-size: 16px; }
+  .elag-cmt-block .btn { padding: 6px 10px; }
+}
+</style>
 <div class="parcelle-fiche">
   {{#features}}
   <div class="parcelle">
@@ -11,7 +23,7 @@
     <div class="elag-cmt-block">
       Statut de la parcelle :
       <select class="form-control form-control-sm" id="elag-st-{{parc}}" data-elag-status-select
-              style="max-width:260px" onchange="elagSetStatus('{{parc}}', this.value, this)">
+              style="width:100%;max-width:260px" onchange="elagSetStatus('{{parc}}', this.value, this)">
         <option value="">— Aucun statut —</option>
         <option value="proprio_ok" style="background-color:#009900;color:#fff;font-weight:bold">Propriétaire OK</option>
         <option value="visite" style="background-color:#FF8C00;color:#fff;font-weight:bold">Visite à programmer</option>
@@ -22,7 +34,7 @@
       Commentaire partagé :
       <div id="elag-cmt-{{parc}}" class="elag-cmt-text">Cliquez sur Actualiser pour afficher le commentaire et le statut enregistrés.</div>
       <div style="margin-top:6px">
-        <select class="elag-cmt-author form-control form-control-sm" style="max-width:220px">
+        <select class="elag-cmt-author form-control form-control-sm" style="width:100%;max-width:220px">
           <option value="">Votre nom…</option>
           <option value="pyd">pyd</option>
           <option value="cc">cc</option>

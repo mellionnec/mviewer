@@ -73,15 +73,25 @@
 
   loadData(true).then(forceRender);
 
-  /* ---------- synchro automatique : une fiche affichee = select deja coherent ----------
-   * Un observer surveille le panneau : des qu'un bloc .elag-cmt-block apparait
-   * (ouverture d'une fiche parcelle), on positionne le menu deroulant de statut selon
-   * l'etat reel de la table, immediatement avec les donnees en cache, puis une seconde
-   * fois apres relecture Grist pour garantir la coherence couleur <-> select. */
+  /* Couleurs du statut, identiques a la legende et a la couche.
+   * On colore le select lui-meme (affichage ferme) : seul moyen fiable
+   * multi-navigateurs, les styles des <option> ne s'affichent pas
+   * partout dans le champ ferme. */
+  var ST_STYLE = {
+    "proprio_ok": { background: "#009900", color: "#fff", bold: true },
+    "visite":     { background: "#FF8C00", color: "#fff", bold: true },
+    "non_traite": { background: "#FF0000", color: "#fff", bold: true }
+  };
+
   function setBlockStatus(block, st) {
     var sel = block.querySelector ? block.querySelector("select[data-elag-status-select]") : null;
     if (!sel) { return; }
-    sel.value = ["proprio_ok", "visite", "non_traite"].indexOf(st) > -1 ? st : "";
+    var valid = ["proprio_ok", "visite", "non_traite"].indexOf(st) > -1;
+    sel.value = valid ? st : "";
+    var cs = valid ? ST_STYLE[st] : null;
+    sel.style.backgroundColor = cs ? cs.background : "";
+    sel.style.color = cs ? cs.color : "";
+    sel.style.fontWeight = cs && cs.bold ? "bold" : "";
   }
 
   function parcFromId(id) {
@@ -231,6 +241,34 @@
       .finally(function (b) { b.disabled = false; }.bind(null, btn));
   };
 
+  /* ---------- style du contour de la commune : trait continu noir, fond transparent ---------- */
+  function communeStyle() {
+    return new ol.style.Style({
+      stroke: new ol.style.Stroke({ color: "#000000", width: 2.5 }),
+      fill: new ol.style.Fill({ color: "rgba(0,0,0,0)" })
+    });
+  }
+
+  function applyCommuneStyle() {
+    try {
+      var o = window.mviewer && window.mviewer.getLayer && window.mviewer.getLayer("commune");
+      var l = o && o.layer;
+      if (!l || !l.setStyle) { return false; }
+      l.setStyle(communeStyle());
+      try {
+        window.mviewer.drawVectorLegend("commune", [{
+          label: "Contour de la commune",
+          geometry: "Polygon",
+          styles: [communeStyle()]
+        }]);
+      } catch (e) { console.log("elag: legende commune non dessinee", e); }
+      return true;
+    } catch (e) {
+      console.log("elag: erreur application style commune", e);
+      return true;
+    }
+  }
+
   /* ---------- style de la couche parcelle : trait fin pointille gris fonce ---------- */
   function parcelleStyle() {
     return new ol.style.Style({
@@ -262,6 +300,8 @@
 
   var styleTries = 0;
   var styleTimer = setInterval(function () {
-    if (applyParcelleStyle() || ++styleTries > 200) { clearInterval(styleTimer); }
+    var doneP = applyParcelleStyle();
+    var doneC = applyCommuneStyle();
+    if ((doneP && doneC) || ++styleTries > 200) { clearInterval(styleTimer); }
   }, 250);
 })();
