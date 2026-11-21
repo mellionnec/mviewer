@@ -2,7 +2,7 @@
  * Extension mviewer : commentaires + statuts partagés par parcelle (ELAG Mellionnec)
  * Stockage : table Grist "Suivi_elagages_view" (doc public docs.getgrist.com bedv66Hzpg9e),
  * appel direct de l'API REST Grist (CORS ouvert, ecriture anonyme activee sur le doc).
- * Statuts : "proprio_ok" (vert), "visite" (orange), "non_traite" (rouge), sinon rien.
+ * Statuts : "proprio_ok" (vert), "visite" (orange), "non_traite" = propriétaire NON (rouge), sinon rien.
  * La coloration des parcelles est faite par la couche customlayer "parc_statuts",
  * qui lit window.ELAG_STATUSES maintenu par cette extension.
  */
@@ -180,7 +180,7 @@
           msg.textContent = st
             ? (st === "proprio_ok" ? "Enregistré : propriétaire OK (vert)."
               : st === "visite" ? "Enregistré : visite à programmer (orange)."
-              : "Enregistré : non traité (rouge).")
+              : "Enregistré : propriétaire NON (rouge).")
             : "Statut réinitialisé.";
         }
         forceRender();

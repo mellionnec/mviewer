@@ -1,6 +1,6 @@
 /* parc_statuts.js - CustomLayer mviewer
  * Surcouche de coloration des parcelles ELAG selon leur statut :
- *   proprietaire_ok -> vert, visite -> orange, non_traite -> rouge,
+ *   proprietaire_ok -> vert, visite -> orange, non_traite ("Propriétaire NON") -> rouge,
  *   pas de statut -> non dessinee (seul le contour parc_elag reste).
  * Les statuts viennent de window.ELAG_STATUSES, maintenu par l'extension elag-comments.js
  * (table Grist Suivi_elagages_view).
@@ -63,8 +63,8 @@
    * sinon _drawVectorLegend plante et l'ajout de la couche est interrompu. */
   var legend = {
     items: [
-      { label: "Non traité", geometry: "Polygon", styles: [new ol.style.Style({ stroke: new ol.style.Stroke({ color: COLORS.non_traite.stroke, width: COLORS.non_traite.width }), fill: new ol.style.Fill({ color: COLORS.non_traite.fill }) })] },
       { label: "Propriétaire OK", geometry: "Polygon", styles: [new ol.style.Style({ stroke: new ol.style.Stroke({ color: COLORS.proprio_ok.stroke, width: COLORS.proprio_ok.width }), fill: new ol.style.Fill({ color: COLORS.proprio_ok.fill }) })] },
+      { label: "Propriétaire NON", geometry: "Polygon", styles: [new ol.style.Style({ stroke: new ol.style.Stroke({ color: COLORS.non_traite.stroke, width: COLORS.non_traite.width }), fill: new ol.style.Fill({ color: COLORS.non_traite.fill }) })] },
       { label: "Visite à programmer", geometry: "Polygon", styles: [new ol.style.Style({ stroke: new ol.style.Stroke({ color: COLORS.visite.stroke, width: COLORS.visite.width }), fill: new ol.style.Fill({ color: COLORS.visite.fill }) })] }
     ]
   };

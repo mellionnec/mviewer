@@ -15,7 +15,7 @@
         <option value="">— Aucun statut —</option>
         <option value="proprio_ok">Propriétaire OK</option>
         <option value="visite">Visite à programmer</option>
-        <option value="non_traite">Non traité</option>
+        <option value="non_traite">Propriétaire NON</option>
       </select>
       <div class="elag-status-msg" style="font-size:0.85em;color:#555"></div>
       <hr/>
