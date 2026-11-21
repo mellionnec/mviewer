@@ -94,7 +94,7 @@
                 tooltipenabled="true"
                 tooltipcontent="{{parc}} - {{elag_nom_prop}}"
                 attribution="Données ELAG, Mellionnec et alentours (Côtes-d'Armor)">
-                <template url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@180f5448a9c11fc2d98d1f17e2edcd279bf54a30/apps/templates/parcelle.mst"/>
+                <template url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@62363d5844cea7ead30877a1ab487639b6583656/apps/templates/parcelle.mst"/>
             </layer>
             <layer
                 id="vc_cr"
