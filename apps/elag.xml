@@ -19,7 +19,7 @@
     <searchparameters localities="true" features="true" bbox="false" static="false"/>
 
     <extensions>
-        <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@1004c7313ae5febd9985ee0076e1cdd3bc4541b1/apps/js/elag-comments.js"/>
+        <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@a3025cd7cbb801da92e0ada4bbec9de8f2ac8acb/apps/js/elag-comments.js"/>
     </extensions>
 
     <baselayers style="default">
@@ -72,7 +72,7 @@
                 id="parc_statuts"
                 type="customlayer"
                 name="Statuts des parcelles"
-                url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@1004c7313ae5febd9985ee0076e1cdd3bc4541b1/apps/customlayers/parc_statuts.js"
+                url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@bb1224157da5892373348d9b3e9ecddcd302d8b1/apps/customlayers/parc_statuts.js"
                 visible="true"
                 queryable="false"
                 vectorlegend="true"
@@ -100,20 +100,11 @@
                 id="vc_cr"
                 type="customlayer"
                 name="Voies communales et chemins ruraux"
-                url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@95445cf26146168190d5150886904c684b7814a2/apps/customlayers/vc_cr.js"
-                visible="true"
-                queryable="true"
+                url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@a3025cd7cbb801da92e0ada4bbec9de8f2ac8acb/apps/customlayers/vc_cr.js"
+                visible="false"
+                queryable="false"
                 vectorlegend="true"
                 attribution="Voirie communale et rurale, commune de Mellionnec"/>
-            <layer
-                id="lieux_dits"
-                type="customlayer"
-                name="Lieux-dits"
-                url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@95445cf26146168190d5150886904c684b7814a2/apps/customlayers/lieux_dits.js"
-                visible="true"
-                queryable="false"
-                vectorlegend="false"
-                attribution="Lieux-dits (OpenStreetMap)"/>
         </theme>
     </themes>
 </config>
