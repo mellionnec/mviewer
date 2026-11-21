@@ -59,11 +59,13 @@
   var layer = new ol.layer.Vector({ source: source, style: styleFn, visible: true });
   window.elagStatutsLayer = layer;
 
+  /* NB : mviewer exige geometry: "Polygon" | "LineString" | "Point" (majuscule),
+   * sinon _drawVectorLegend plante et l'ajout de la couche est interrompu. */
   var legend = {
     items: [
-      { label: "Non traité", geometry: "polygon", styles: [new ol.style.Style({ stroke: new ol.style.Stroke({ color: COLORS.non_traite.stroke, width: COLORS.non_traite.width }), fill: new ol.style.Fill({ color: COLORS.non_traite.fill }) })] },
-      { label: "Propriétaire OK", geometry: "polygon", styles: [new ol.style.Style({ stroke: new ol.style.Stroke({ color: COLORS.proprio_ok.stroke, width: COLORS.proprio_ok.width }), fill: new ol.style.Fill({ color: COLORS.proprio_ok.fill }) })] },
-      { label: "Visite à programmer", geometry: "polygon", styles: [new ol.style.Style({ stroke: new ol.style.Stroke({ color: COLORS.visite.stroke, width: COLORS.visite.width }), fill: new ol.style.Fill({ color: COLORS.visite.fill }) })] }
+      { label: "Non traité", geometry: "Polygon", styles: [new ol.style.Style({ stroke: new ol.style.Stroke({ color: COLORS.non_traite.stroke, width: COLORS.non_traite.width }), fill: new ol.style.Fill({ color: COLORS.non_traite.fill }) })] },
+      { label: "Propriétaire OK", geometry: "Polygon", styles: [new ol.style.Style({ stroke: new ol.style.Stroke({ color: COLORS.proprio_ok.stroke, width: COLORS.proprio_ok.width }), fill: new ol.style.Fill({ color: COLORS.proprio_ok.fill }) })] },
+      { label: "Visite à programmer", geometry: "Polygon", styles: [new ol.style.Style({ stroke: new ol.style.Stroke({ color: COLORS.visite.stroke, width: COLORS.visite.width }), fill: new ol.style.Fill({ color: COLORS.visite.fill }) })] }
     ]
   };
 
