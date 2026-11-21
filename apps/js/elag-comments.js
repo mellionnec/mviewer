@@ -4,7 +4,7 @@
  * Statuts : "proprio_ok" (vert), "visite" (orange), sinon rouge (à traiter).
  */
 (function () {
-  var ELAG_API = "https://script.google.com/macros/s/AKfycbzLsMwF-nRrrr9u_k8vIKxgZorDhRPv30PEYcI2NvZu25_Gk-L-vb1pVZ673qpXr7ReVQ/exec";
+  var ELAG_API = "https://script.google.com/macros/s/AKfycbyK-m3A5JssLFLErX2RWvMn7Q1WmGcBrmyCmJDW4Mft1ahkkPNGSdgfC15qLdaNOVj2kg/exec";
 
   var data = null; /* { comments: {parc:{author,date,text}}, statuses: {parc:"proprio_ok"|"visite"} } */
 
@@ -79,7 +79,6 @@
         if (!data) data = { comments: {}, statuses: {} };
         if (resp.status) { data.statuses[parc] = resp.status; }
         else { delete data.statuses[parc]; }
-        /* statuts exclusifs : décocher l'autre case */
         var otherStatus = (status === "proprio_ok") ? "visite" : "proprio_ok";
         var other = block.querySelector("input[data-elag-status='" + otherStatus + "']");
         if (other) { other.checked = false; }
