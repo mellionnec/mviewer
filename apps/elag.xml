@@ -19,7 +19,7 @@
     <searchparameters localities="true" features="true" bbox="false" static="false"/>
 
     <extensions>
-        <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@main/apps/js/elag-comments.js"/>
+        <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@95445cf26146168190d5150886904c684b7814a2/apps/js/elag-comments.js"/>
     </extensions>
 
     <baselayers style="default">
@@ -77,7 +77,7 @@
                 id="vc_cr"
                 type="customlayer"
                 name="Voies communales et chemins ruraux"
-                url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@main/apps/customlayers/vc_cr.js"
+                url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@95445cf26146168190d5150886904c684b7814a2/apps/customlayers/vc_cr.js"
                 visible="true"
                 queryable="true"
                 vectorlegend="true"
@@ -86,7 +86,7 @@
                 id="lieux_dits"
                 type="customlayer"
                 name="Lieux-dits"
-                url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@main/apps/customlayers/lieux_dits.js"
+                url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@95445cf26146168190d5150886904c684b7814a2/apps/customlayers/lieux_dits.js"
                 visible="true"
                 queryable="false"
                 vectorlegend="false"
