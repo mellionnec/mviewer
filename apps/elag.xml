@@ -13,9 +13,7 @@
         projection="EPSG:3857"
         center="-366907,6134858"
         zoom="13"
-        maxzoom="19"
-        extent="-372041,6130180,-361773,6139537"
-        maxextent="-372041,6130180,-361773,6139537"/>
+        maxzoom="19"/>
 
     <olscompletion url="https://data.geopf.fr/geocodage/completion" type="completion" attribution="Service d'autocomplétion de l'IGN"/>
     <searchparameters localities="true" features="true" bbox="false" static="false"/>
