@@ -18,6 +18,10 @@
     <olscompletion url="https://data.geopf.fr/geocodage/completion" type="completion" attribution="Service d'autocomplétion de l'IGN"/>
     <searchparameters localities="true" features="true" bbox="false" static="false"/>
 
+    <extensions>
+        <extension type="javascript" src="https://raw.githubusercontent.com/mellionnec/mviewer/main/apps/js/elag-comments.js"/>
+    </extensions>
+
     <baselayers style="default">
         <baselayer
             type="OSM"
@@ -59,8 +63,6 @@
                 queryable="true"
                 style="highlight"
                 vectorlegend="true"
-                fields="parc,commune,contenance,arpente,created,updated,elag_nom_prop,elag_adresse_prop,elag_commentaire"
-                aliases="Parcelle,Code INSEE,Contenance (m2),Arpentée,Créée le,Mise à jour,Propriétaire,Adresse propriétaire,Commentaire"
                 searchable="true"
                 searchengine="fuse"
                 fusesearchkeys="parc,elag_nom_prop,elag_commentaire"
@@ -68,7 +70,9 @@
                 tooltip="true"
                 tooltipenabled="true"
                 tooltipcontent="{{parc}} - {{elag_nom_prop}}"
-                attribution="Données ELAG, Mellionnec et alentours (Côtes-d'Armor)"/>
+                attribution="Données ELAG, Mellionnec et alentours (Côtes-d'Armor)">
+                <template url="https://raw.githubusercontent.com/mellionnec/mviewer/main/apps/templates/parcelle.mst"/>
+            </layer>
         </theme>
     </themes>
 </config>
