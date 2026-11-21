@@ -19,7 +19,7 @@
     <searchparameters localities="true" features="true" bbox="false" static="false"/>
 
     <extensions>
-        <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@6b078673c02f3a2d0aa8cbf0d6fd84971df9e613/apps/js/elag-comments.js"/>
+        <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@1004c7313ae5febd9985ee0076e1cdd3bc4541b1/apps/js/elag-comments.js"/>
     </extensions>
 
     <baselayers style="default">
@@ -68,6 +68,15 @@
             name="Parcelles ELAG"
             collapsed="false"
             icon="fas fa-leaf">
+            <layer
+                id="parc_statuts"
+                type="customlayer"
+                name="Statuts des parcelles"
+                url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@1004c7313ae5febd9985ee0076e1cdd3bc4541b1/apps/customlayers/parc_statuts.js"
+                visible="true"
+                queryable="false"
+                vectorlegend="true"
+                attribution="Statuts saisis dans la table Grist"/>
             <layer
                 id="parc_elag"
                 type="geojson"
