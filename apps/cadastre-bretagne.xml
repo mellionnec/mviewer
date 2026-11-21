@@ -1,0 +1,85 @@
+<config>
+    <application
+        title="Cadastre Bretagne"
+        style="css/themes/theme.css"
+        showhelp="false"
+        measuretools="true"
+        exportpng="true"
+        lang="fr"/>
+
+    <map
+        center="-265000,6250000"
+        zoom="8"
+        projextent="-1417431.805,6237352.269,1615635.259,7894271.736"
+        maxzoom="19"
+        projection="EPSG:3857"/>
+
+    <searchparameters bbox="false" localities="true" features="true" static="false"/>
+
+    <baselayers>
+        <baselayer
+            type="OSM"
+            id="osm"
+            label="OpenStreetMap"
+            title="OpenStreetMap"
+            name="OpenStreetMap"
+            url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+            format="image/png"
+            attribution="© OpenStreetMap contributors"
+            visible="true"/>
+        <baselayer
+            type="WMS"
+            id="planign"
+            label="Plan IGN"
+            title="Plan IGN"
+            name="PLAN.IGN"
+            url="https://geoservices.ign.fr/plan/ows"
+            format="image/png"
+            attribution="IGN"
+            visible="false"/>
+    </baselayers>
+
+    <themes>
+        <theme
+            name="Cadastre et Communes"
+            collapsed="false"
+            icon="fas fa-home">
+            <layer
+                id="parcelles"
+                type="wms"
+                name="CP.CadastralParcel"
+                url="https://geobretagne.fr/geoserver/cadastre/wms"
+                version="1.3.0"
+                format="image/png"
+                queryable="true"
+                visible="true"
+                tiled="true"
+                infoformat="application/vnd.ogc.gml"
+                attribution="DDFIP Bretagne / GeoBretagne"
+                metadata="https://geobretagne.fr/geonetwork/srv/api/records/84bfecb6-c03e-4e20-a043-ab2c3bdeb3da"
+                metadata-csw="https://geobretagne.fr/geonetwork/srv/eng/csw?service=CSW&amp;request=GetRecordById&amp;version=2.0.2&amp;elementSetName=full&amp;id=84bfecb6-c03e-4e20-a043-ab2c3bdeb3da"/>
+            <layer
+                id="batiments"
+                type="wms"
+                name="CP.CadastralBuilding"
+                url="https://geobretagne.fr/geoserver/cadastre/wms"
+                version="1.3.0"
+                format="image/png"
+                queryable="true"
+                visible="true"
+                tiled="true"
+                attribution="DDFIP Bretagne / GeoBretagne"/>
+            <layer
+                id="communes"
+                type="wms"
+                name="COMMUNE"
+                url="https://geobretagne.fr/geoserver/geor_loc/ows"
+                version="1.3.0"
+                format="image/png"
+                queryable="true"
+                visible="true"
+                tiled="true"
+                attribution="Partenariat GeoBretagne"/>
+        </theme>
+    </themes>
+</config>
