@@ -5,7 +5,7 @@
  */
 (function () {
   // ⚠️ À ADAPTER : URL de votre Web App Apps Script (déployée)
-  var ELAG_API = "URL_WEB_APP_A_COLLER";
+  var ELAG_API = "https://script.google.com/macros/s/AKfycbzLsMwF-nRrrr9u_k8vIKxgZorDhRPv30PEYcI2NvZu25_Gk-L-vb1pVZ673qpXr7ReVQ/exec";
 
   var commentsCache = null;
 
