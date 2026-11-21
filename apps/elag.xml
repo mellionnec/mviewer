@@ -19,7 +19,7 @@
     <searchparameters localities="true" features="true" bbox="false" static="false"/>
 
     <extensions>
-        <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@ed2133e38c0618e2e0226fa8cb5d32ba4e1055c5/apps/js/elag-comments.js"/>
+        <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@0170387dec2d5dc30e3f13a42886ac76b860d1b1/apps/js/elag-comments.js"/>
     </extensions>
 
     <baselayers style="default">
@@ -72,7 +72,7 @@
                 id="parc_statuts"
                 type="customlayer"
                 name="Statuts des parcelles"
-                url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@fc4a8d456785a5e9ae3f57a15e4dfded9c942020/apps/customlayers/parc_statuts.js"
+                url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@25a3a7b6c9ff7a47ca549851ed606b0c9115703d/apps/customlayers/parc_statuts.js"
                 visible="true"
                 queryable="false"
                 vectorlegend="true"
@@ -94,13 +94,13 @@
                 tooltipenabled="true"
                 tooltipcontent="{{parc}} - {{elag_nom_prop}}"
                 attribution="Données ELAG, Mellionnec et alentours (Côtes-d'Armor)">
-                <template url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@c2726f47a75e123b07a9c178cd2ff802b8992bd8/apps/templates/parcelle.mst"/>
+                <template url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@25a3a7b6c9ff7a47ca549851ed606b0c9115703d/apps/templates/parcelle.mst"/>
             </layer>
             <layer
                 id="vc_cr"
                 type="customlayer"
                 name="Voies communales et chemins ruraux"
-                url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@fc4a8d456785a5e9ae3f57a15e4dfded9c942020/apps/customlayers/vc_cr.js"
+                url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@c6773fdd66e8951cb271556e46c06fb6cba604d0/apps/customlayers/vc_cr.js"
                 visible="false"
                 queryable="false"
                 vectorlegend="true"
