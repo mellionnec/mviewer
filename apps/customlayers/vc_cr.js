@@ -10,6 +10,7 @@
  *    avec le chargement async du script sinon).
  *  - veille d'enregistrement : si processLayer n'a pas enregistre la couche
  *    apres 2,5 s, on le fait nous-meme pour que la case a cocher reponde.
+ *  - traces console [vc_cr] pour diagnostiquer l'affichage.
  */
 (function () {
   var LAYER_ID = "vc_cr";
@@ -59,12 +60,20 @@
     return styles;
   };
 
+  console.log("[vc_cr] script de couche demarre");
+
   var source = new ol.source.Vector();
   var loading = false;
   var loaded = false;
 
+  function mapReady() {
+    try { var m = mviewer.getMap(); return !!(m && m.getView && m.getView().getProjection()); }
+    catch (e) { return false; }
+  }
+
   function loadFeatures() {
     if (loading || loaded) { return; }
+    if (!mapReady()) { console.log("[vc_cr] carte pas prete, nouvelle tentative"); setTimeout(loadFeatures, 250); return; }
     loading = true;
     var proj = mviewer.getMap().getView().getProjection();
     fetch(DATA_URL)
@@ -76,8 +85,9 @@
           featureProjection: proj
         }));
         loaded = true;
+        console.log("[vc_cr] ", source.getFeatures().length, " entites chargees");
       })
-      .catch(function (e) { console.log("vc_cr: erreur de chargement", e); })
+      .catch(function (e) { console.log("[vc_cr] erreur de chargement", e); })
       .finally(function () { loading = false; });
   }
 
@@ -94,6 +104,7 @@
   };
 
   new CustomLayer(LAYER_ID, layer, legend);
+  console.log("[vc_cr] couche enregistree (CustomLayer)");
 
   /* ---- veille de legende : dessine la legende des que le canvas existe ---- */
   var LEGEND_ID = "vector-legend-" + LAYER_ID;
@@ -110,7 +121,7 @@
   setTimeout(function tick() {
     if (registered) { return; }
     var cl = mviewer.customLayers && mviewer.customLayers[LAYER_ID];
-    if (cl && cl.config) { registered = true; return; }
+    if (cl && cl.config) { registered = true; console.log("[vc_cr] mviewer a bien enregistre la couche"); return; }
     if (mviewer.processLayer && mviewer.customLayers) {
       var oLayer = {
         id: LAYER_ID, layerid: LAYER_ID,
@@ -124,7 +135,7 @@
       };
       var cl2 = mviewer.customLayers[LAYER_ID];
       if (cl2 && cl2.layer) {
-        try { mviewer.processLayer(oLayer, cl2.layer); registered = true; return; } catch (e) { console.log("vc_cr: processLayer de secours en erreur", e); }
+        try { mviewer.processLayer(oLayer, cl2.layer); registered = true; console.log("[vc_cr] enregistrement de secours effectue (mviewer ne l'avait pas fait)"); return; } catch (e) { console.log("[vc_cr] processLayer de secours en erreur", e); }
       }
     }
     setTimeout(tick, 800);
