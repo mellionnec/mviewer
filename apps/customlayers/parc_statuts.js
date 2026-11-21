@@ -4,8 +4,7 @@
  * (le contour rouge de la couche parc_elag reste visible en dessous).
  * Les statuts viennent de window.ELAG_STATUSES, maintenu par l'extension elag-comments.js
  * (table Grist Suivi_elagages_view).
- * Reconstruction complete des entites a chaque changement : ne depend pas du
- * mecanisme style/changed d'OpenLayers, contournant le bug de recoloration.
+ * Reconstruction complete des entites a chaque changement + changed() en secours.
  */
 (function () {
   var LAYER_ID = "parc_statuts";
@@ -57,6 +56,7 @@
   window.elagStatutsForceRender = function () { build(); };
 
   var layer = new ol.layer.Vector({ source: source, style: styleFn, visible: true });
+  window.elagStatutsLayer = layer;
 
   var legend = {
     items: [
