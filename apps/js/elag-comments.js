@@ -42,7 +42,6 @@
           else if (String(f.visite || "").trim() === "X") { statuses[p] = "visite"; }
         });
         data = { comments: comments, statuses: statuses, rowIds: rowIds };
-        window.ELAG_STATUSES = statuses;
         return data;
       })
       .catch(function () {
@@ -51,9 +50,16 @@
       });
   }
 
+  /* Coloration : reconstruit la couche de statuts, puis securise avec changed().
+   * Double mecanisme pour garantir la maj immediate a l'ecran. */
   function forceRender() {
-    if (data) { window.ELAG_STATUSES = data.statuses; }
-    if (typeof window.elagStatutsForceRender === "function") { window.elagStatutsForceRender(); }
+    window.ELAG_STATUSES = (data && data.statuses) || {};
+    try {
+      if (typeof window.elagStatutsForceRender === "function") { window.elagStatutsForceRender(); }
+      if (window.elagStatutsLayer) { window.elagStatutsLayer.changed(); }
+    } catch (e) {
+      console.log("elag: erreur de rafraichissement de la couche statuts", e);
+    }
   }
 
   loadData(true).then(forceRender);
@@ -86,7 +92,11 @@
     var newStatus = checked ? status : "";
     var rid = data && data.rowIds && data.rowIds[parc];
     if (!rid) {
-      if (msg) { msg.textContent = "Erreur : parcelle inconnue dans la table Grist."; }
+      /* la table a pu evoluer : on recharge une fois avant d'abandonner */
+      loadData(true).then(function (d) {
+        if (d.rowIds && d.rowIds[parc]) { window.elagSetStatus(parc, status, cb); }
+        else if (msg) { msg.textContent = "Erreur : parcelle inconnue dans la table Grist."; }
+      });
       return;
     }
     cb.disabled = true;
@@ -100,22 +110,26 @@
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ records: [{ id: rid, fields: fields }] })
     })
-      .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); })
-      .then(function () {
-        data.statuses[parc] = newStatus || undefined;
-        if (!newStatus) { delete data.statuses[parc]; }
-        var otherStatus = (status === "proprio_ok") ? "visite" : "proprio_ok";
-        var other = block.querySelector("input[data-elag-status='" + otherStatus + "']");
-        if (other) { other.checked = false; }
+      .then(function (r) {
+        if (!r.ok) { throw new Error("HTTP " + r.status + " " + r.statusText); }
+      })
+      .then(function () { return loadData(true); })
+      .then(function (d) {
+        var st = (d.statuses && d.statuses[parc]) || "";
+        var cbs = block.querySelectorAll ? block.querySelectorAll("input[data-elag-status]") : [];
+        cbs.forEach(function (c) {
+          c.checked = (c.getAttribute("data-elag-status") === st);
+        });
         if (msg) {
-          msg.textContent = newStatus
-            ? (newStatus === "proprio_ok" ? "Enregistré : propriétaire OK (vert)." : "Enregistré : visite à programmer (orange).")
+          msg.textContent = st
+            ? (st === "proprio_ok" ? "Enregistré : propriétaire OK (vert)." : "Enregistré : visite à programmer (orange).")
             : "Statut réinitialisé (rouge).";
         }
         forceRender();
       })
       .catch(function (e) {
-        if (msg) { msg.textContent = "Erreur : " + e.message; }
+        if (cb && checked === false) cb.checked = false;
+        if (msg) { msg.textContent = "Erreur : " + (e.message || e); }
       })
       .finally(function () { cb.disabled = false; });
   };
@@ -153,7 +167,7 @@
         }
         ta.value = "";
       })
-      .catch(function (e) { status.textContent = "Erreur : " + e.message; })
+      .catch(function (e) { status.textContent = "Erreur : " + (e.message || e); })
       .finally(function () { btn.disabled = false; });
   };
 })();

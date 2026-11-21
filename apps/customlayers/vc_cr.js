@@ -1,14 +1,14 @@
 /* vc_cr.js - CustomLayer mviewer
- * Voiries de 22146 : VC (voies communales) en mauve avec numéro,
- * CR (chemins ruraux) en vert fluo pointillé avec numéro.
+ * Voiries de 22146 : VC (voies communales) en mauve clair avec numero,
+ * CR (chemins ruraux) en vert fluo pointille avec numero.
  * Source : GeoJSON en Lambert-93 (EPSG:2154), reprojection client via proj4.
- * Le refresh de la source est surchargé : mviewer appelle getSource().refresh()
- * au réaffichage de la couche, il doit recharger les entités.
+ * Le refresh de la source est surcharge (mviewer appelle getSource().refresh()
+ * au reaffichage de la couche).
  */
 (function () {
   var LAYER_ID = "vc_cr";
   var DATA_URL = "https://raw.githubusercontent.com/mellionnec/mviewer/main/vc_cr_22146.geojson";
-  var VC_COLOR = "#A020F0";
+  var VC_COLOR = "#C77DFF";
   var CR_COLOR = "#00FF00";
   var WIDTH = 3;
 
@@ -42,7 +42,7 @@
       styles.push(new ol.style.Style({
         geometry: new ol.geom.Point(line.getCoordinateAt(0.5)),
         text: new ol.style.Text({
-          font: "bold 10px Helvetica, Arial, sans-serif",
+          font: "bold 11px Helvetica, Arial, sans-serif",
           text: num,
           fill: new ol.style.Fill({ color: color }),
           stroke: new ol.style.Stroke({ color: "#000000", width: 2 }),
