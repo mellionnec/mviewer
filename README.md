@@ -1,19 +1,16 @@
 # mviewer
 
-Configurations mviewer (visualiseur géographique open source, https://github.com/mviewer/mviewer).
+Configurations mviewer (https://github.com/mviewer/mviewer).
 
-## Applications
+## Application parcelles ELAG
 
-- `apps/cadastre-bretagne.xml` : Cadastre et communes de Bretagne (WMS GéoBretagne) + OSM / Plan IGN
-- `apps/parc-elag.xml` : Parcelles ELAG (GeoJSON, 75 entités, Mellionnec 22) sur fond **Plan IGN v2**
+- `apps/elag.xml` : Parcelles ELAG (75 entités GeoJSON, Mellionnec 22) sur fond **Plan IGN v2** (WMTS data.geopf.fr)
 - `parc_elag.geojson` : données source (WGS84)
 
-## Visualisation
+### Lien de visualisation
 
-Lancer une instance mviewer (ex. https://geobretagne.fr/mviewer/) avec le paramètre :
+https://geobretagne.fr/mviewer/?config=https://raw.githubusercontent.com/mellionnec/mviewer/main/apps/elag.xml
 
-`?config=<URL du XML>`
+Au besoin, epinglez le commit dans l'URL pour contourner le cache du CDN GitHub (5 min a 24 h) :
 
-Exemple :
-
-https://geobretagne.fr/mviewer/?config=https://raw.githubusercontent.com/mellionnec/mviewer/main/apps/parc-elag.xml
+`https://raw.githubusercontent.com/mellionnec/mviewer/<SHA>/apps/elag.xml`

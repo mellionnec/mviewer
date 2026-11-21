@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <application
+        title="Parcelles ELAG Mellionnec"
+        showhelp="false"
+        measuretools="true"
+        zoomtools="true"
+        initialextenttool="true"
+        coordinates="false"
+        lang="fr"/>
+
+    <mapoptions
+        projection="EPSG:3857"
+        center="-366096,5362204"
+        zoom="13"
+        maxzoom="19"/>
+
+    <olscompletion url="https://data.geopf.fr/geocodage/completion" type="completion" attribution="Service d'autocomplétion de l'IGN"/>
+    <searchparameters localities="true" features="true" bbox="false" static="false"/>
+
+    <baselayers style="default">
+        <baselayer
+            type="WMTS"
+            id="planignv2"
+            label="Plan IGN v2"
+            title="Plan IGN v2"
+            url="https://data.geopf.fr/wmts"
+            layers="GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2"
+            format="image/png"
+            style="normal"
+            matrixset="PM"
+            fromcapacity="false"
+            visible="true"
+            maxzoom="19"
+            attribution="IGN, Géoportail"/>
+        <baselayer
+            type="OSM"
+            id="osm"
+            label="OpenStreetMap"
+            title="OpenStreetMap"
+            url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+            visible="false"
+            attribution="© OpenStreetMap contributors"/>
+    </baselayers>
+
+    <themes>
+        <theme
+            id="elag"
+            name="Parcelles ELAG"
+            collapsed="false"
+            icon="fas fa-leaf">
+            <layer
+                id="parc_elag"
+                type="geojson"
+                name="Parcelles ELAG (75)"
+                url="https://raw.githubusercontent.com/mellionnec/mviewer/main/parc_elag.geojson"
+                visible="true"
+                queryable="true"
+                style="highlight"
+                vectorlegend="true"
+                fields="parc,commune,contenance,arpente,created,updated,elag_nom_prop,elag_adresse_prop,elag_commentaire"
+                aliases="Parcelle,Code INSEE,Contenance (m2),Arpentée,Créée le,Mise à jour,Propriétaire,Adresse propriétaire,Commentaire"
+                searchable="true"
+                searchengine="fuse"
+                fusesearchkeys="parc,elag_nom_prop,elag_commentaire"
+                fusesearchresult="{{parc}} - {{elag_nom_prop}}"
+                tooltip="true"
+                tooltipenabled="true"
+                tooltipcontent="{{parc}} - {{elag_nom_prop}}"
+                attribution="Données ELAG, Mellionnec et alentours (Côtes-d'Armor)"/>
+        </theme>
+    </themes>
+</config>
