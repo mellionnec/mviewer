@@ -60,6 +60,7 @@
 
   var legend = {
     items: [
+      { label: "À traiter", geometry: "polygon", styles: [new ol.style.Style({ stroke: new ol.style.Stroke({ color: "#FF0000", width: 2 }), fill: new ol.style.Fill({ color: "rgba(255,0,0,0)" }) })] },
       { label: "Propriétaire OK", geometry: "polygon", styles: [new ol.style.Style({ stroke: new ol.style.Stroke({ color: COLORS.proprio_ok.stroke, width: COLORS.proprio_ok.width }), fill: new ol.style.Fill({ color: COLORS.proprio_ok.fill }) })] },
       { label: "Visite à programmer", geometry: "polygon", styles: [new ol.style.Style({ stroke: new ol.style.Stroke({ color: COLORS.visite.stroke, width: COLORS.visite.width }), fill: new ol.style.Fill({ color: COLORS.visite.fill }) })] }
     ]

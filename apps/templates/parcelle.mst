@@ -3,32 +3,27 @@
   <div class="parcelle">
     <h4><b>Parcelle {{parc}}</b></h4>
     <table class="table table-sm">
-      <tr><td><b>Code INSEE</b></td><td>{{commune}}</td></tr>
-      <tr><td><b>Contenance</b></td><td>{{contenance}} m2</td></tr>
-      <tr><td><b>Arpentée</b></td><td>{{arpente}}</td></tr>
-      <tr><td><b>Créée le</b></td><td>{{created}}</td></tr>
-      <tr><td><b>Mise à jour</b></td><td>{{updated}}</td></tr>
-      <tr><td><b>Propriétaire</b></td><td>{{elag_nom_prop}}</td></tr>
-      <tr><td><b>Adresse propriétaire</b></td><td>{{elag_adresse_prop}}</td></tr>
-      <tr><td><b>Note d'origine</b></td><td>{{elag_commentaire}}</td></tr>
+      <tr><td>Parcelle</td><td>{{parc}}</td></tr>
+      <tr><td>Propriétaire</td><td>{{elag_nom_prop}}</td></tr>
+      <tr><td>Adresse</td><td>{{elag_adresse_prop}}</td></tr>
     </table>
     <hr/>
     <div class="elag-cmt-block">
-      <b>🧭 Statut de la parcelle :</b>
+      Statut de la parcelle :
       <div class="form-check">
         <input class="form-check-input" type="checkbox" id="elag-st-p-{{parc}}" data-elag-status="proprio_ok" onchange="elagSetStatus('{{parc}}','proprio_ok',this)">
-        <label class="form-check-label" for="elag-st-p-{{parc}}">✅ Propriétaire OK (parcelle en vert)</label>
+        <label class="form-check-label" for="elag-st-p-{{parc}}">Propriétaire OK</label>
       </div>
       <div class="form-check">
         <input class="form-check-input" type="checkbox" id="elag-st-v-{{parc}}" data-elag-status="visite" onchange="elagSetStatus('{{parc}}','visite',this)">
-        <label class="form-check-label" for="elag-st-v-{{parc}}">🚶 Visite à programmer (parcelle en orange)</label>
+        <label class="form-check-label" for="elag-st-v-{{parc}}">Visite à programmer</label>
       </div>
       <div class="elag-status-msg" style="font-size:0.85em;color:#555"></div>
       <hr/>
-      <b>💬 Commentaire partagé :</b>
-      <div id="elag-cmt-{{parc}}" class="elag-cmt-text">Cliquez sur « Actualiser » pour afficher le commentaire et le statut enregistrés.</div>
+      Commentaire partagé :
+      <div id="elag-cmt-{{parc}}" class="elag-cmt-text">Cliquez sur Actualiser pour afficher le commentaire et le statut enregistrés.</div>
       <div style="margin-top:6px">
-        <input type="text" class="elag-cmt-author form-control form-control-sm" placeholder="Votre nom (optionnel)" style="max-width:220px"/>
+        <input type="text" class="elag-cmt-author form-control form-control-sm" placeholder="Votre nom" style="max-width:220px"/>
         <textarea class="elag-cmt-input form-control" rows="2" placeholder="Votre commentaire sur cette parcelle..."></textarea>
         <button type="button" class="btn btn-sm btn-info mt-1" onclick="elagShowComment('{{parc}}', this)">🔄 Actualiser</button>
         <button type="button" class="btn btn-sm btn-success mt-1" onclick="elagSaveComment('{{parc}}', this)">💾 Enregistrer</button>
