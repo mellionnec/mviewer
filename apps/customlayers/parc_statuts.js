@@ -67,4 +67,16 @@
   };
 
   new CustomLayer(LAYER_ID, layer, legend);
+
+  /* ---- veille de legende : mviewer ne dessine la legende vectorielle qu'a la
+   * creation de l'entree de couche ; si le script arrive APRES (course async),
+   * le canvas reste vide. On redessine des que le canvas apparait. ---- */
+  var LEGEND_ID = "vector-legend-" + LAYER_ID;
+  var lastCanvas = null;
+  setInterval(function () {
+    var canvas = document.getElementById(LEGEND_ID);
+    if (canvas && canvas !== lastCanvas && mviewer.drawVectorLegend) {
+      try { mviewer.drawVectorLegend(LAYER_ID, legend.items); lastCanvas = canvas; } catch (e) {}
+    }
+  }, 1500);
 })();

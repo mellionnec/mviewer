@@ -4,6 +4,12 @@
  * Source : GeoJSON en Lambert-93 (EPSG:2154), reprojection client via proj4.
  * Le refresh de la source est surcharge (mviewer appelle getSource().refresh()
  * au reaffichage de la couche).
+ * Robustesse :
+ *  - veille de legende : mviewer.drawVectorLegend() des que l'entree apparait
+ *    (la legende vectorielle n'est dessinee qu'a la creation du noeud, course
+ *    avec le chargement async du script sinon).
+ *  - veille d'enregistrement : si processLayer n'a pas enregistre la couche
+ *    apres 2,5 s, on le fait nous-meme pour que la case a cocher reponde.
  */
 (function () {
   var LAYER_ID = "vc_cr";
@@ -54,8 +60,12 @@
   };
 
   var source = new ol.source.Vector();
+  var loading = false;
+  var loaded = false;
 
   function loadFeatures() {
+    if (loading || loaded) { return; }
+    loading = true;
     var proj = mviewer.getMap().getView().getProjection();
     fetch(DATA_URL)
       .then(function (r) { return r.json(); })
@@ -65,12 +75,13 @@
           dataProjection: "EPSG:2154",
           featureProjection: proj
         }));
+        loaded = true;
       })
-      .catch(function (e) { console.log("vc_cr: erreur de chargement", e); });
+      .catch(function (e) { console.log("vc_cr: erreur de chargement", e); })
+      .finally(function () { loading = false; });
   }
 
-  source.refresh = function () { loadFeatures(); };
-  source.setLoader(function () { loadFeatures(); });
+  source.refresh = function () { loaded = false; loadFeatures(); };
   loadFeatures();
 
   var layer = new ol.layer.Vector({ source: source, style: styleFunction, visible: true });
@@ -78,9 +89,44 @@
   var legend = {
     items: [
       { label: "VC - voies communales", geometry: "line", styles: [new ol.style.Style({ stroke: new ol.style.Stroke({ color: VC_COLOR, width: WIDTH }) })] },
-      { label: "CR - chemins ruraux (vert fluo, pointillés)", geometry: "line", styles: [new ol.style.Style({ stroke: new ol.style.Stroke({ color: CR_COLOR, width: WIDTH, lineDash: [10, 8] }) })] }
+      { label: "CR - chemins ruraux", geometry: "line", styles: [new ol.style.Style({ stroke: new ol.style.Stroke({ color: CR_COLOR, width: WIDTH, lineDash: [10, 8] }) })] }
     ]
   };
 
   new CustomLayer(LAYER_ID, layer, legend);
+
+  /* ---- veille de legende : dessine la legende des que le canvas existe ---- */
+  var LEGEND_ID = "vector-legend-" + LAYER_ID;
+  var lastCanvas = null;
+  setInterval(function () {
+    var canvas = document.getElementById(LEGEND_ID);
+    if (canvas && canvas !== lastCanvas && mviewer.drawVectorLegend) {
+      try { mviewer.drawVectorLegend(LAYER_ID, legend.items); lastCanvas = canvas; } catch (e) {}
+    }
+  }, 1500);
+
+  /* ---- veille d'enregistrement : processLayer de secours si besoin ---- */
+  var registered = false;
+  setTimeout(function tick() {
+    if (registered) { return; }
+    var cl = mviewer.customLayers && mviewer.customLayers[LAYER_ID];
+    if (cl && cl.config) { registered = true; return; }
+    if (mviewer.processLayer && mviewer.customLayers) {
+      var oLayer = {
+        id: LAYER_ID, layerid: LAYER_ID,
+        name: "Voies communales et chemins ruraux",
+        title: "Voies communales et chemins ruraux",
+        type: "customlayer", checked: false, opacity: 1,
+        vectorlegend: true, queryable: false, showintoc: true,
+        searchable: false, infohighlight: false, expanded: false, top: false,
+        attribution: "Voirie communale et rurale, commune de Mellionnec",
+        theme: "elag"
+      };
+      var cl2 = mviewer.customLayers[LAYER_ID];
+      if (cl2 && cl2.layer) {
+        try { mviewer.processLayer(oLayer, cl2.layer); registered = true; return; } catch (e) { console.log("vc_cr: processLayer de secours en erreur", e); }
+      }
+    }
+    setTimeout(tick, 800);
+  }, 2500);
 })();
