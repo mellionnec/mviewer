@@ -1,148 +1,35 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <config>
-    <application
-        title="Mellionnec - Campagne Elagage 2026"
-        showhelp="false"
-        measuretools="true"
-        zoomtools="true"
-        initialextenttool="true"
-        coordinates="false"
-        lang="fr"
-        style="css/themes/green.css"/>
-
-    <mapoptions
-        projection="EPSG:3857"
-        center="-366907,6134858"
-        zoom="13"
-        maxzoom="19"/>
-
-    <olscompletion url="https://data.geopf.fr/geocodage/completion" type="completion" attribution="Service d'autocomplétion de l'IGN"/>
-    <searchparameters localities="true" features="true" bbox="false" static="false"/>
-
+    <application title="Mellionnec - Campagne Elagage 2026" showhelp="false" measuretools="true" zoomtools="true" initialextenttool="true" coordinates="false" lang="fr" style="css/themes/green.css" />
+    <mapoptions projection="EPSG:3857" center="-366907,6134858" zoom="13" maxzoom="19" />
+    <olscompletion url="https://data.geopf.fr/geocodage/completion" type="completion" attribution="Service d'autocomplétion de l'IGN" />
+    <searchparameters localities="true" features="true" bbox="false" static="false" />
     <extensions>
-        <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@6379fddcbb7179eff918f042e531f6ef16ea413e/apps/js/elag-comments.js"/>
-        <extension type="javascript" src="/apps/macommune/config/configuration.js"/>
-        <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@c426d764f9a0e6b64d36295eba57d28de07dcb74/apps/js/macommune-siren.js"/>
+        <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@6379fddcbb7179eff918f042e531f6ef16ea413e/apps/js/elag-comments.js" />
+        <extension type="javascript" src="/apps/macommune/config/configuration.js" />
+        <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@c426d764f9a0e6b64d36295eba57d28de07dcb74/apps/js/macommune-siren.js" />
     </extensions>
-
     <baselayers style="default">
-        <baselayer
-            type="OSM"
-            id="osm"
-            label="OpenStreetMap"
-            title="OpenStreetMap"
-            url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-            format="image/png"
-            visible="true"
-            attribution="© OpenStreetMap contributors"/>
-        <baselayer
-            type="WMTS"
-            id="planignv2"
-            label="Plan IGN v2"
-            title="Plan IGN v2"
-            url="https://data.geopf.fr/wmts"
-            layers="GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2"
-            format="image/png"
-            style="normal"
-            matrixset="PM"
-            fromcapacity="false"
-            visible="false"
-            maxzoom="19"
-            attribution="IGN, Géoportail"/>
-        <baselayer
-            type="WMTS"
-            id="ortho"
-            label="Photo aérienne IGN"
-            title="GéoPortail"
-            url="https://data.geopf.fr/wmts"
-            layers="ORTHOIMAGERY.ORTHOPHOTOS"
-            format="image/jpeg"
-            style="normal"
-            matrixset="PM"
-            fromcapacity="false"
-            visible="false"
-            maxzoom="22"
-            attribution="IGN, Géoportail"/>
+        <baselayer type="OSM" id="osm" label="OpenStreetMap" title="OpenStreetMap" url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" format="image/png" visible="true" attribution="© OpenStreetMap contributors" />
+        <baselayer type="WMTS" id="planignv2" label="Plan IGN v2" title="Plan IGN v2" url="https://data.geopf.fr/wmts" layers="GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2" format="image/png" style="normal" matrixset="PM" fromcapacity="false" visible="false" maxzoom="19" attribution="IGN, Géoportail" />
+        <baselayer type="WMTS" id="ortho" label="Photo aérienne IGN" title="GéoPortail" url="https://data.geopf.fr/wmts" layers="ORTHOIMAGERY.ORTHOPHOTOS" format="image/jpeg" style="normal" matrixset="PM" fromcapacity="false" visible="false" maxzoom="22" attribution="IGN, Géoportail" />
     </baselayers>
-
     <themes>
-        <theme
-            id="elag"
-            name="Parcelles ELAG"
-            collapsed="false"
-            icon="fas fa-leaf">
-            <layer
-                id="commune"
-                type="geojson"
-                name="Contour de la commune"
-                url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@acc8d131bbbb73855eb3f6fbd815cade90c98d0f/mellionnec.geojson"
-                visible="true"
-                queryable="false"
-                vectorlegend="false"
-                attribution="IGN AdminExpress via GéoBretagne"/>
-            <layer
-                id="parc_statuts"
-                type="customlayer"
-                name="Statuts des parcelles"
-                url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@180f5448a9c11fc2d98d1f17e2edcd279bf54a30/apps/customlayers/parc_statuts.js"
-                visible="true"
-                queryable="false"
-                vectorlegend="true"
-                attribution="Statuts saisis dans la table Grist"/>
-            <layer
-                id="parc_elag"
-                type="geojson"
-                name="Parcelles ELAG (75)"
-                url="https://raw.githubusercontent.com/mellionnec/mviewer/main/parc_elag.geojson"
-                visible="true"
-                queryable="true"
-                style="highlight"
-                vectorlegend="true"
-                searchable="true"
-                searchengine="fuse"
-                fusesearchkeys="parc,elag_nom_prop,elag_commentaire"
-                fusesearchresult="{{parc}} - {{elag_nom_prop}}"
-                tooltip="true"
-                tooltipenabled="true"
-                tooltipcontent="{{parc}} - {{elag_nom_prop}}"
-                attribution="Données ELAG, Mellionnec et alentours (Côtes-d'Armor)">
-                <template url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@9a80360352ef866007f82ec9218d84efe3e99d1c/apps/templates/parcelle.mst"/>
+        <theme id="elag" name="Elagage 2026" collapsed="false" icon="fas fa-leaf">
+            <layer id="parc_statuts" type="customlayer" name="Statuts des parcelles" url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@180f5448a9c11fc2d98d1f17e2edcd279bf54a30/apps/customlayers/parc_statuts.js" visible="true" queryable="false" vectorlegend="true" attribution="Statuts saisis dans la table Grist" />
+            <layer id="parc_elag" type="geojson" name="Parcelles identifiées" url="https://raw.githubusercontent.com/mellionnec/mviewer/main/parc_elag.geojson" visible="true" queryable="true" style="highlight" vectorlegend="true" searchable="true" searchengine="fuse" fusesearchkeys="parc,elag_nom_prop,elag_commentaire" fusesearchresult="{{parc}} - {{elag_nom_prop}}" tooltip="true" tooltipenabled="true" tooltipcontent="{{parc}} - {{elag_nom_prop}}" attribution="Données ELAG, Mellionnec et alentours (Côtes-d'Armor)">
+                <template url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@9a80360352ef866007f82ec9218d84efe3e99d1c/apps/templates/parcelle.mst" />
             </layer>
-            <layer
-                id="bal"
-                type="customlayer"
-                name="Numéros d'adresse (BAL)"
-                url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@b6c281bdac8fe339a739a7528fe7a44dabc6c613/apps/customlayers/bal.js"
-                visible="false"
-                queryable="true"
-                vectorlegend="true"
-                attribution="Base Adresse Locale, commune de Mellionnec">
-                <template url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@b6c281bdac8fe339a739a7528fe7a44dabc6c613/apps/templates/bal.mst"/>
+        </theme>
+        <theme id="donnees-mellionnec" name="Données Mellionnec" collapsed="false" icon="fas fa-map-marked-alt">
+            <layer id="commune" type="geojson" name="Contour de la commune" url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@acc8d131bbbb73855eb3f6fbd815cade90c98d0f/mellionnec.geojson" visible="true" queryable="false" vectorlegend="false" attribution="IGN AdminExpress via GéoBretagne" />
+            <layer id="parcelle" type="customlayer" name="Parcelles cadastrales" tiled="true" visible="false" queryable="true" infoformat="application/vnd.ogc.gml" searchable="false" legendurl="https://geobretagne.fr/geonetwork/srv/api/records/60c7177f-e4e0-48aa-922b-802f2c921efc/attachments/parcelles.png" attribution="DGFip Bretagne" metadata="https://geobretagne.fr/datahub/dataset/60c7177f-e4e0-48aa-922b-802f2c921efc" url="https://geobretagne.fr/apps/macommune/customlayers/parcelle.js">
+                <template url="https://geobretagne.fr/apps/macommune/templates/parcelle.mst" />
             </layer>
-            <layer
-                id="parcelle"
-                type="customlayer"
-                name="Parcelles cadastrales"
-                tiled="true"
-                visible="false"
-                queryable="true"
-                infoformat="application/vnd.ogc.gml"
-                searchable="false"
-                legendurl="https://geobretagne.fr/geonetwork/srv/api/records/60c7177f-e4e0-48aa-922b-802f2c921efc/attachments/parcelles.png"
-                attribution="DGFip Bretagne"
-                metadata="https://geobretagne.fr/datahub/dataset/60c7177f-e4e0-48aa-922b-802f2c921efc"
-                url="https://geobretagne.fr/apps/macommune/customlayers/parcelle.js">
-                <template url="https://geobretagne.fr/apps/macommune/templates/parcelle.mst"/>
+            <layer id="bal" type="customlayer" name="Numéros d'adresse (BAL)" url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@b6c281bdac8fe339a739a7528fe7a44dabc6c613/apps/customlayers/bal.js" visible="false" queryable="true" vectorlegend="true" attribution="Base Adresse Locale, commune de Mellionnec">
+                <template url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@b6c281bdac8fe339a739a7528fe7a44dabc6c613/apps/templates/bal.mst" />
             </layer>
-            <layer
-                id="vc_cr"
-                type="customlayer"
-                name="Voies communales et chemins ruraux"
-                url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@88d8fd189e1277865b4ba41f2a7947e3dcae9637/apps/customlayers/vc_cr.js"
-                visible="false"
-                queryable="false"
-                vectorlegend="true"
-                attribution="Voirie communale et rurale, commune de Mellionnec"/>
+            <layer id="vc_cr" type="customlayer" name="Voies communales et chemins ruraux" url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@88d8fd189e1277865b4ba41f2a7947e3dcae9637/apps/customlayers/vc_cr.js" visible="false" queryable="false" vectorlegend="true" attribution="Voirie communale et rurale, commune de Mellionnec" />
         </theme>
     </themes>
 </config>
