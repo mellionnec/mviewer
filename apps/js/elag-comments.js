@@ -120,11 +120,29 @@
     });
   }
 
+  /* ---------- dedoublonnage du panneau : le clic sur une parcelle peut etre
+   * detecte deux fois par mviewer/OpenLayers (meme entite rendez deux fois),
+   * ce qui affiche deux fiches identiques avec des ids DOM dupliques.
+   * On ne garde que la premiere fiche par identifiant de parcelle. */
+  function dedupFiche() {
+    var seen = {};
+    document.querySelectorAll("select[data-elag-status-select]").forEach(function (sel) {
+      var p = parcFromId(sel.id);
+      if (seen[p]) {
+        var b = sel.closest(".parcelle");
+        if (b && b.parentNode) { b.parentNode.removeChild(b); }
+      } else {
+        seen[p] = true;
+      }
+    });
+  }
+
   var syncTimer = null;
   function scheduleSync() {
     if (syncTimer) { clearTimeout(syncTimer); }
     syncTimer = setTimeout(function () {
       syncTimer = null;
+      try { dedupFiche(); } catch (e) { console.log("elag: erreur dedoublonnage fiche", e); }
       var blocks = document.querySelectorAll(".elag-cmt-block");
       blocks.forEach(function (b) { syncBlock(b); });
     }, 80);
