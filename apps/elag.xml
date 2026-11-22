@@ -21,6 +21,8 @@
 
     <extensions>
         <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@4be746f2d4314b0d8a688921a748bcfe0d7088ab/apps/js/elag-comments.js"/>
+        <extension type="javascript" src="/apps/macommune/config/configuration.js"/>
+        <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@c426d764f9a0e6b64d36295eba57d28de07dcb74/apps/js/macommune-siren.js"/>
     </extensions>
 
     <baselayers style="default">
@@ -59,6 +61,7 @@
             matrixset="PM"
             fromcapacity="false"
          
+
    visible="false"
             maxzoom="22"
             attribution="IGN, Géoportail"/>
@@ -105,7 +108,8 @@
                 tooltipenabled="true"
                 tooltipcontent="{{parc}} - {{elag_nom_prop}}"
                 attribution="Données ELAG, Mellionnec et alentours (Côtes-d'Armor)">
-                <template url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@9a80360352ef866007f82ec9218d8
+                <template url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@9a80360352ef866007f82ec9218d
+8
 4efe3e99d1c/apps/templates/parcelle.mst"/>
             </layer>
             <layer
@@ -118,6 +122,21 @@
                 vectorlegend="true"
                 attribution="Base Adresse Locale, commune de Mellionnec">
                 <template url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@b6c281bdac8fe339a739a7528fe7a44dabc6c613/apps/templates/bal.mst"/>
+            </layer>
+            <layer
+                id="parcelle"
+                type="customlayer"
+                name="Parcelles cadastrales"
+                tiled="true"
+                visible="false"
+                queryable="true"
+                infoformat="application/vnd.ogc.gml"
+                searchable="false"
+                legendurl="https://geobretagne.fr/geonetwork/srv/api/records/60c7177f-e4e0-48aa-922b-802f2c921efc/attachments/parcelles.png"
+                attribution="DGFip Bretagne"
+                metadata="https://geobretagne.fr/datahub/dataset/60c7177f-e4e0-48aa-922b-802f2c921efc"
+                url="https://geobretagne.fr/apps/macommune/customlayers/parcelle.js">
+                <template url="https://geobretagne.fr/apps/macommune/templates/parcelle.mst"/>
             </layer>
             <layer
                 id="vc_cr"
