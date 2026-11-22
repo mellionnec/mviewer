@@ -1,0 +1,10 @@
+<div class="popup">
+  <table class="table table-striped">
+    <tr><td><b>Numéro</b></td><td>{{numero}}{{#suffixe}} {{suffixe}}{{/suffixe}}</td></tr>
+    <tr><td><b>Voie</b></td><td>{{toponyme}}</td></tr>
+    <tr><td><b>Commune</b></td><td>{{commune_nom}}</td></tr>
+    <tr><td><b>Position</b></td><td>{{position}}</td></tr>
+    <tr><td><b>Parcelles</b></td><td>{{cad_parcelles}}</td></tr>
+    <tr><td><b>Mise à jour</b></td><td>{{date_der_maj}}</td></tr>
+  </table>
+</div>
