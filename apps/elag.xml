@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <config>
-    <application title="Mellionnec - Campagne Elagage 2026" showhelp="false" measuretools="true" zoomtools="true" initialextenttool="true" coordinates="false" lang="fr" style="css/themes/green.css" />
+    <application title="Mellionnec - Campagne Elagage 2026" showhelp="false" measuretools="true" zoomtools="true" initialextenttool="true" coordinates="false" geoloc="true" lang="fr" style="css/themes/green.css" />
     <mapoptions projection="EPSG:3857" center="-366907,6134858" zoom="13" maxzoom="19" />
     <olscompletion url="https://data.geopf.fr/geocodage/completion" type="completion" attribution="Service d'autocomplétion de l'IGN" />
     <searchparameters localities="true" features="true" bbox="false" static="false" />
@@ -9,10 +9,11 @@
         <extension type="javascript" src="/apps/macommune/config/configuration.js" />
         <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@c426d764f9a0e6b64d36295eba57d28de07dcb74/apps/js/macommune-siren.js" />
     </extensions>
-    <baselayers style="default">
-        <baselayer type="OSM" id="osm" label="OpenStreetMap" title="OpenStreetMap" url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" format="image/png" visible="true" attribution="© OpenStreetMap contributors" />
-        <baselayer type="WMTS" id="planignv2" label="Plan IGN v2" title="Plan IGN v2" url="https://data.geopf.fr/wmts" layers="GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2" format="image/png" style="normal" matrixset="PM" fromcapacity="false" visible="false" maxzoom="19" attribution="IGN, Géoportail" />
-        <baselayer type="WMTS" id="ortho" label="Photo aérienne IGN" title="GéoPortail" url="https://data.geopf.fr/wmts" layers="ORTHOIMAGERY.ORTHOPHOTOS" format="image/jpeg" style="normal" matrixset="PM" fromcapacity="false" visible="false" maxzoom="22" attribution="IGN, Géoportail" />
+    <baselayers style="gallery">
+        <baselayer visible="true" id="osm_faded" thumbgallery="https://tile.geobretagne.fr/osm/tms/osm:faded/EPSG3857/16/64287/85957.png" title="OpenStreetMap Faded" label="OpenStreetMap Faded" type="WMTS" url="https://tile.geobretagne.fr/osm/service" layers="osm:faded" attributioncollapsible="false" format="image/png" matrixset="PM" fromcapacity="false" style="_null" attribution="GéoBretagne. Données : les contributeurs d'OpenStreetMap, ODbL" />
+        <baselayer visible="false" id="osm1" type="OSM" label="OpenStreetMap" title="OpenStreetMap" thumbgallery="img/basemap/osm.png" url="https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution="les contributeurs d'OpenStreetMap, ODbL" />
+        <baselayer visible="false" id="planignv2" type="WMTS" label="Plan IGN v2" title="Plan IGN v2" thumbgallery="https://data.geopf.fr/wmts?SERVICE=WMTS&amp;VERSION=1.0.0&amp;REQUEST=GetTile&amp;LAYER=GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2&amp;TILEMATRIXSET=PM&amp;TILEMATRIX=16&amp;TILECOL=32167&amp;TILEROW=22729&amp;STYLE=normal&amp;FORMAT=image/png" url="https://data.geopf.fr/wmts" layers="GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2" format="image/png" style="normal" matrixset="PM" fromcapacity="false" maxzoom="19" attribution="IGN, Géoportail" />
+        <baselayer visible="false" id="ortho1" type="WMTS" label="Photo aérienne IGN" title="Géoportail" thumbgallery="https://data.geopf.fr/wmts?SERVICE=WMTS&amp;VERSION=1.0.0&amp;REQUEST=GetTile&amp;LAYER=ORTHOIMAGERY.ORTHOPHOTOS&amp;TILEMATRIXSET=PM&amp;TILEMATRIX=16&amp;TILECOL=32167&amp;TILEROW=22729&amp;STYLE=normal&amp;FORMAT=image/jpeg" url="https://data.geopf.fr/wmts" layers="ORTHOIMAGERY.ORTHOPHOTOS" format="image/jpeg" style="normal" matrixset="PM" fromcapacity="false" maxzoom="22" attribution="IGN, Géoportail" />
     </baselayers>
     <themes>
         <theme id="elag" name="Elagage 2026" collapsed="false" icon="fas fa-leaf">
