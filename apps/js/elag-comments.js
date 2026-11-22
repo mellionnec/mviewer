@@ -281,29 +281,11 @@
     }
   }
 
-  /* ---------- style de la couche parcelle : hachures jaunes, contour noir pointille ---------- */
-  var hatchFillCache = null;
-  function hatchFill() {
-    if (hatchFillCache) { return hatchFillCache; }
-    var c = document.createElement("canvas");
-    c.width = 8; c.height = 8;
-    var ctx = c.getContext("2d");
-    ctx.strokeStyle = "rgba(255,255,0,0.75)";
-    ctx.lineWidth = 3;
-    ctx.lineCap = "butt";
-    ctx.beginPath();
-    ctx.moveTo(0, 8); ctx.lineTo(8, 0);
-    ctx.moveTo(-2, 2); ctx.lineTo(2, -2);
-    ctx.moveTo(6, 10); ctx.lineTo(10, 6);
-    ctx.stroke();
-    hatchFillCache = new ol.style.Fill({ color: ctx.createPattern(c, "repeat") });
-    return hatchFillCache;
-  }
-
+  /* ---------- style de la couche parcelle : contour rose fluo pointille, sans remplissage ---------- */
   function parcelleStyle() {
     return new ol.style.Style({
-      stroke: new ol.style.Stroke({ color: "#000000", width: 2, lineDash: [6, 4] }),
-      fill: hatchFill()
+      stroke: new ol.style.Stroke({ color: "#FF00FF", width: 2.5, lineDash: [6, 4] }),
+      fill: new ol.style.Fill({ color: "rgba(255,0,255,0)" })
     });
   }
 
@@ -313,7 +295,7 @@
       var l = o && o.layer;
       if (!l || !l.setStyle) { return false; }
       l.setStyle(parcelleStyle());
-      console.log("elag: style parcelle applique (hachures jaunes, contour noir pointille)");
+      console.log("elag: style parcelle applique (contour rose fluo pointille, sans fond)");
       return true;
     } catch (e) {
       console.log("elag: erreur application style parcelle", e);
