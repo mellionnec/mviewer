@@ -5,7 +5,7 @@
     <olscompletion url="https://data.geopf.fr/geocodage/completion" type="completion" attribution="Service d'autocomplétion de l'IGN" />
     <searchparameters localities="true" features="true" bbox="false" static="false" />
     <extensions>
-        <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@42bbdd0c3491120381a4984c8111bf63ae5a66af/apps/js/elag-comments.js" />
+        <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@eedc7c9d8085a6720467546652062e6d3ebfab17/apps/js/elag-comments.js" />
         <extension type="javascript" src="/apps/macommune/config/configuration.js" />
         <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@c426d764f9a0e6b64d36295eba57d28de07dcb74/apps/js/macommune-siren.js" />
     </extensions>
