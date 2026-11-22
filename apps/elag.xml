@@ -20,7 +20,7 @@
     <searchparameters localities="true" features="true" bbox="false" static="false"/>
 
     <extensions>
-        <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@f3959b59887587b1e04426b91407bde97054aa6e/apps/js/elag-comments.js"/>
+        <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@6379fddcbb7179eff918f042e531f6ef16ea413e/apps/js/elag-comments.js"/>
         <extension type="javascript" src="/apps/macommune/config/configuration.js"/>
         <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@c426d764f9a0e6b64d36295eba57d28de07dcb74/apps/js/macommune-siren.js"/>
     </extensions>
