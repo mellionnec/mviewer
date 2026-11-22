@@ -255,13 +255,7 @@
       var l = o && o.layer;
       if (!l || !l.setStyle) { return false; }
       l.setStyle(communeStyle());
-      try {
-        window.mviewer.drawVectorLegend("commune", [{
-          label: "Contour de la commune",
-          geometry: "Polygon",
-          styles: [communeStyle()]
-        }]);
-      } catch (e) { console.log("elag: legende commune non dessinee", e); }
+      /* pas d'entree de legende pour la commune : affichage carte uniquement */
       return true;
     } catch (e) {
       console.log("elag: erreur application style commune", e);
