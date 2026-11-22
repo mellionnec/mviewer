@@ -20,7 +20,7 @@
     <searchparameters localities="true" features="true" bbox="false" static="false"/>
 
     <extensions>
-        <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@4be746f2d4314b0d8a688921a748bcfe0d7088ab/apps/js/elag-comments.js"/>
+        <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@f3959b59887587b1e04426b91407bde97054aa6e/apps/js/elag-comments.js"/>
         <extension type="javascript" src="/apps/macommune/config/configuration.js"/>
         <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@c426d764f9a0e6b64d36295eba57d28de07dcb74/apps/js/macommune-siren.js"/>
     </extensions>
@@ -53,7 +53,8 @@
             type="WMTS"
             id="ortho"
             label="Photo aérienne IGN"
-            title="GéoPortail"
+     
+       title="GéoPortail"
             url="https://data.geopf.fr/wmts"
             layers="ORTHOIMAGERY.ORTHOPHOTOS"
             format="image/jpeg"
@@ -106,7 +107,8 @@
                 fusesearchresult="{{parc}} - {{elag_nom_prop}}"
                 tooltip="true"
                 tooltipenabled="true"
-                tooltipcontent="{{parc}} - {{elag_nom_prop}}"
+       
+         tooltipcontent="{{parc}} - {{elag_nom_prop}}"
                 attribution="Données ELAG, Mellionnec et alentours (Côtes-d'Armor)">
                 <template url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@9a80360352ef866007f82ec9218d
 8
@@ -143,7 +145,8 @@
                 type="customlayer"
                 name="Voies communales et chemins ruraux"
                 url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@88d8fd189e1277865b4ba41f2a7947e3dcae9637/apps/customlayers/vc_cr.js"
-                visible="false"
+       
+         visible="false"
                 queryable="false"
                 vectorlegend="true"
                 attribution="Voirie communale et rurale, commune de Mellionnec"/>
