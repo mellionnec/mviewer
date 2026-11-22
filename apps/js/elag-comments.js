@@ -292,10 +292,36 @@
     }
   }
 
+  /* ---------- lien "Modifier (Grist)" dans l'entete de la carte ---------- */
+  var GRIST_DOC_URL = "https://docs.getgrist.com/bedv66Hzpg9e/tables?utm_id=share-doc";
+
+  function addGristLink() {
+    try {
+      if (document.getElementById("elag-grist-link")) { return true; }
+      var t = document.querySelector(".mv-title");
+      if (!t || !t.parentNode) { return false; }
+      var a = document.createElement("a");
+      a.id = "elag-grist-link";
+      a.className = "navbar-brand";
+      a.href = GRIST_DOC_URL;
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.title = "Modifier les statuts et commentaires dans la table Grist";
+      a.style.marginLeft = "8px";
+      a.textContent = "\u270d Modifier (Grist)";
+      t.parentNode.insertBefore(a, t.nextSibling);
+      return true;
+    } catch (e) {
+      console.log("elag: erreur ajout lien Grist", e);
+      return true; /* ne pas bloquer le reste */
+    }
+  }
+
   var styleTries = 0;
   var styleTimer = setInterval(function () {
     var doneP = applyParcelleStyle();
     var doneC = applyCommuneStyle();
-    if ((doneP && doneC) || ++styleTries > 200) { clearInterval(styleTimer); }
+    var doneG = addGristLink();
+    if ((doneP && doneC && doneG) || ++styleTries > 200) { clearInterval(styleTimer); }
   }, 250);
 })();
