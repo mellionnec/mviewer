@@ -20,7 +20,7 @@
     <searchparameters localities="true" features="true" bbox="false" static="false"/>
 
     <extensions>
-        <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@5dc6eb62fc50fd8ce6e5bdd8edb5cdb9d96ed7a3/apps/js/elag-comments.js"/>
+        <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@b1e3be0009774678a355446e8cb5257544006e08/apps/js/elag-comments.js"/>
     </extensions>
 
     <baselayers style="default">
@@ -76,7 +76,7 @@
                 url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@acc8d131bbbb73855eb3f6fbd815cade90c98d0f/mellionnec.geojson"
                 visible="true"
                 queryable="false"
-                vectorlegend="true"
+                vectorlegend="false"
                 attribution="IGN AdminExpress via GéoBretagne"/>
             <layer
                 id="parc_statuts"
