@@ -23,7 +23,7 @@
 
     <extensions>
         <extension type="javascript" src="/apps/macommune/config/configuration.js"/>
-        <extension type="javascript" src="https://raw.githubusercontent.com/mellionnec/mviewer/main/apps/js/macommune-siren.js"/>
+        <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@c426d764f9a0e6b64d36295eba57d28de07dcb74/apps/js/macommune-siren.js"/>
     </extensions>
 
     <baselayers style="gallery">
