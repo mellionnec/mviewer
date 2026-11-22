@@ -53,17 +53,14 @@
             type="WMTS"
             id="ortho"
             label="Photo aérienne IGN"
-     
-       title="GéoPortail"
+            title="GéoPortail"
             url="https://data.geopf.fr/wmts"
             layers="ORTHOIMAGERY.ORTHOPHOTOS"
             format="image/jpeg"
             style="normal"
             matrixset="PM"
             fromcapacity="false"
-         
-
-   visible="false"
+            visible="false"
             maxzoom="22"
             attribution="IGN, Géoportail"/>
     </baselayers>
@@ -107,12 +104,9 @@
                 fusesearchresult="{{parc}} - {{elag_nom_prop}}"
                 tooltip="true"
                 tooltipenabled="true"
-       
-         tooltipcontent="{{parc}} - {{elag_nom_prop}}"
+                tooltipcontent="{{parc}} - {{elag_nom_prop}}"
                 attribution="Données ELAG, Mellionnec et alentours (Côtes-d'Armor)">
-                <template url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@9a80360352ef866007f82ec9218d
-8
-4efe3e99d1c/apps/templates/parcelle.mst"/>
+                <template url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@9a80360352ef866007f82ec9218d84efe3e99d1c/apps/templates/parcelle.mst"/>
             </layer>
             <layer
                 id="bal"
@@ -145,8 +139,7 @@
                 type="customlayer"
                 name="Voies communales et chemins ruraux"
                 url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@88d8fd189e1277865b4ba41f2a7947e3dcae9637/apps/customlayers/vc_cr.js"
-       
-         visible="false"
+                visible="false"
                 queryable="false"
                 vectorlegend="true"
                 attribution="Voirie communale et rurale, commune de Mellionnec"/>
