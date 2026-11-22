@@ -13,9 +13,7 @@
 <div class="parcelle-fiche">
   {{#features}}
   <div class="parcelle">
-    <h4><b>Parcelle {{parc}}</b></h4>
     <table class="table table-sm">
-      <tr><td>Parcelle</td><td>{{parc}}</td></tr>
       <tr><td>Propriétaire</td><td>{{elag_nom_prop}}</td></tr>
       <tr><td>Adresse</td><td>{{elag_adresse_prop}}</td></tr>
     </table>
