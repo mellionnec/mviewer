@@ -263,11 +263,11 @@
     }
   }
 
-  /* ---------- style de la couche parcelle : trait noir continu (largeur 2) ---------- */
+  /* ---------- style de la couche parcelle : trait noir pointille, fond jaune 0.5 ---------- */
   function parcelleStyle() {
     return new ol.style.Style({
-      stroke: new ol.style.Stroke({ color: "#000000", width: 2 }),
-      fill: new ol.style.Fill({ color: "rgba(0,0,0,0)" })
+      stroke: new ol.style.Stroke({ color: "#000000", width: 2, lineDash: [6, 4] }),
+      fill: new ol.style.Fill({ color: "rgba(255,255,0,0.5)" })
     });
   }
 
@@ -284,7 +284,7 @@
           styles: [parcelleStyle()]
         }]);
       } catch (e) { console.log("elag: legende parcelle non dessinee", e); }
-      console.log("elag: style parcelle applique (noir)");
+      console.log("elag: style parcelle applique (noir pointille, jaune)");
       return true;
     } catch (e) {
       console.log("elag: erreur application style parcelle", e);
