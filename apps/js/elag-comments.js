@@ -342,4 +342,31 @@
     var doneG = addGristLink();
     if ((doneP && doneC && doneG) || ++styleTries > 200) { clearInterval(styleTimer); }
   }, 250);
+  /* ---------- deployer les deux themes au chargement ----------
+   * mviewer n'ouvre au demarrage que le 1er theme collapsed=false et le menu
+   * est un accordion (l'ouverture d'un theme referme l'autre). On ouvre donc
+   * manuellement les deux une fois le menu construit. */
+  var themeTries = 0;
+  var themeTimer = setInterval(function () {
+    var ids = ["elag", "donnees-mellionnec"];
+    var ready = true;
+    ids.forEach(function (tid) {
+      if (!document.getElementById("theme-layers-" + tid)) { ready = false; }
+    });
+    if (ready) {
+      setTimeout(function () {
+        ids.forEach(function (tid) {
+          var li = document.getElementById("theme-layers-" + tid);
+          var ul = li ? li.querySelector("ul") : null;
+          if (li && ul) {
+            ul.style.display = "block";
+            li.classList.add("opened");
+          }
+        });
+      }, 300);
+      clearInterval(themeTimer);
+    } else if (++themeTries > 120) {
+      clearInterval(themeTimer);
+    }
+  }, 250);
 })();
