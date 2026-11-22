@@ -107,6 +107,17 @@
                 <template url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@9a80360352ef866007f82ec9218d84efe3e99d1c/apps/templates/parcelle.mst"/>
             </layer>
             <layer
+                id="bal"
+                type="customlayer"
+                name="Numéros d'adresse (BAL)"
+                url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@b6c281bdac8fe339a739a7528fe7a44dabc6c613/apps/customlayers/bal.js"
+                visible="true"
+                queryable="true"
+                vectorlegend="true"
+                attribution="Base Adresse Locale, commune de Mellionnec">
+                <template url="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@b6c281bdac8fe339a739a7528fe7a44dabc6c613/apps/templates/bal.mst"/>
+            </layer>
+            <layer
                 id="vc_cr"
                 type="customlayer"
                 name="Voies communales et chemins ruraux"
