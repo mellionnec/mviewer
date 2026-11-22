@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <application
+        title="Mellionnec - Ma commune"
+        showhelp="false"
+        measuretools="true"
+        zoomtools="true"
+        initialextenttool="true"
+        coordinates="false"
+        geoloc="true"
+        lang="fr"
+        templaterightinfopanel="brut"
+        togglealllayersfromtheme="false"/>
+
+    <mapoptions
+        projection="EPSG:3857"
+        center="-366907,6134858"
+        zoom="13"
+        maxzoom="20"/>
+
+    <olscompletion type="ban" url="https://api-adresse.data.gouv.fr/search/" attribution="Base adresse nationale (BAN)"/>
+    <searchparameters bbox="true" localities="true" features="true" static="false" querymaponclick="true" closeafterclick="true" inputlabel="Rechercher" searchmaxzoomlevel="18"/>
+
+    <extensions>
+        <extension type="javascript" src="/apps/macommune/config/configuration.js"/>
+        <extension type="javascript" src="https://raw.githubusercontent.com/mellionnec/mviewer/main/apps/js/macommune-siren.js"/>
+    </extensions>
+
+    <baselayers style="gallery">
+        <baselayer visible="true" id="osm_faded" thumbgallery="https://tile.geobretagne.fr/osm/tms/osm:faded/EPSG3857/16/64287/85957.png" title="OpenStreetMap Faded" label="OpenStreetMap Faded" type="WMTS"
+            url="https://tile.geobretagne.fr/osm/service" layers="osm:faded" attributioncollapsible="false" format="image/png" matrixset="PM" fromcapacity="false" style="_null"
+            attribution="GéoBretagne. Données : les contributeurs d'OpenStreetMap, ODbL"/>
+        <baselayer visible="false" id="osm1" type="OSM" label="OpenStreetMap" title="OpenStreetMap" thumbgallery="img/basemap/osm.png"
+            url="https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution="les contributeurs d'OpenStreetMap, ODbL"/>
+        <baselayer visible="false" id="planignv2" type="WMTS" label="Plan IGN v2" title="Plan IGN v2"
+            url="https://data.geopf.fr/wmts" layers="GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2" format="image/png"
+            style="normal" matrixset="PM" fromcapacity="false" maxzoom="19"
+            attribution="IGN, Géoportail"/>
+        <baselayer visible="false" id="ortho1" type="WMTS" label="Photo aérienne IGN" title="Géoportail"
+            url="https://data.geopf.fr/wmts" layers="ORTHOIMAGERY.ORTHOPHOTOS" format="image/jpeg"
+            style="normal" matrixset="PM" fromcapacity="false" maxzoom="22"
+            attribution="IGN, Géoportail"/>
+    </baselayers>
+
+    <themes mini="false">
+        <theme id="admin" name="Administrations" collapsed="false" icon="fas fa-caret-right">
+            <layer id="territoire"
+                name="Contour de la commune"
+                type="customlayer"
+                vectorlegend="false"
+                url="https://geobretagne.fr/apps/macommune/customlayers/territoire.js"
+                queryable="false"
+                visible="true"
+                showintoc="false"
+                attribution="GéoBretagne, IGN"/>
+            <layer id="administration" name="Administrations"
+                visible="true" tiled="false" queryable="true"
+                type="customlayer"
+                vectorlegend="false" dynamiclegend="true"
+                searchable="true" searchengine="fuse" fusesearchkeys="nom" fusesearchresult="{{nom}}" fusesearchthreshold="0.3"
+                attribution="API de l'annuaire des services publics" legendurl="https://ows.region-bretagne.fr/geoserver/rb/ows?SERVICE=WMS&amp;VERSION=1.3.0&amp;REQUEST=GetLegendGraphic&amp;SLD_VERSION=1.1.0&amp;FORMAT=image/png&amp;TRANSPARENT=true&amp;LAYER=administration&amp;STYLE=administration_ma_commune"
+                metadata="https://geobretagne.fr/datahub/dataset/b543ad35-966b-4bea-ad0d-ff03ce254914"
+                url="https://geobretagne.fr/apps/macommune/customlayers/administration.js">
+                <template url="https://geobretagne.fr/apps/macommune/templates/administration.mst"></template>
+            </layer>
+        </theme>
+
+        <theme id="equipement" name="Equipements" collapsed="true" icon="fas fa-caret-right">
+            <layer id="etablissement_scolaire" name="Etablissements scolaires" visible="true" tiled="false"
+                queryable="true" type="customlayer" vectorlegend="false" attribution="Rectorat" dynamiclegend="true"
+                searchable="true" searchengine="fuse" fusesearchkeys="appellation_officielle" fusesearchresult="{{appellation_officielle}}" fusesearchthreshold="0.3"
+                metadata="https://geobretagne.fr/datahub/dataset/f33ce68d-9643-4db1-a5e7-745896d5b25a" legendurl="https://geobretagne.fr/geoserver/rectorat/ows?SERVICE=WMS&amp;VERSION=1.3.0&amp;REQUEST=GetLegendGraphic&amp;SLD_VERSION=1.1.0&amp;FORMAT=image/png&amp;TRANSPARENT=true&amp;LAYER=etablissements_scolaire&amp;STYLE="
+                url="https://geobretagne.fr/apps/macommune/customlayers/etablissement_scolaire.js">
+                <template url="https://geobretagne.fr/apps/macommune/templates/etablissement_scolaire.mst"/>
+            </layer>
+            <layer id="culture" name="Equipements culturels" visible="true" tiled="false"
+                queryable="true" type="customlayer" vectorlegend="false" attribution="Ministère de la culture" dynamiclegend="true"
+                searchable="true" searchengine="fuse" fusesearchkeys="nom,type_equipement_ou_lieu" fusesearchresult="{{nom}}" fusesearchthreshold="0.3"
+                metadata="https://geobretagne.fr/datahub/dataset/0f64e892-42be-4ba5-a3a7-bf5169db0c50" legendurl="https://geobretagne.fr/geoserver/opendata/ows?SERVICE=WMS&amp;VERSION=1.3.0&amp;REQUEST=GetLegendGraphic&amp;SLD_VERSION=1.1.0&amp;FORMAT=image/png&amp;TRANSPARENT=true&amp;LAYER=basilic&amp;STYLE=basilic_ma_commune"
+                url="https://geobretagne.fr/apps/macommune/customlayers/culture.js">
+                <template url="https://geobretagne.fr/apps/macommune/templates/culture.mst"/>
+            </layer>
+            <layer id="sport" name="Equipements sportifs" visible="true" tiled="false"
+                queryable="true" type="customlayer" vectorlegend="false" attribution="Ministère des sports" dynamiclegend="true"
+                searchable="true" searchengine="fuse" fusesearchkeys="inst_nom,equip_type_name" fusesearchresult="{{inst_nom}}" fusesearchthreshold="0.3"
+                metadata="https://geobretagne.fr/datahub/dataset/00c57e00-ee57-4e13-93d0-3f98b32004b9" legendurl="https://geobretagne.fr/geoserver/opendata/ows?SERVICE=WMS&amp;VERSION=1.3.0&amp;REQUEST=GetLegendGraphic&amp;SLD_VERSION=1.1.0&amp;FORMAT=image/png&amp;TRANSPARENT=true&amp;LAYER=equipement_sportif&amp;STYLE=equipement_sportif_ma_commune"
+                url="https://geobretagne.fr/apps/macommune/customlayers/sport.js">
+                <template url="https://geobretagne.fr/apps/macommune/templates/sport.mst"/>
+            </layer>
+        </theme>
+
+        <theme id="services" name="Services" collapsed="true" icon="fas fa-caret-right">
+            <layer id="commerce" name="Commerces" visible="true" tiled="false"
+                queryable="true" type="customlayer" vectorlegend="false" attribution="OpenStreetMap" dynamiclegend="true"
+                searchable="true" searchengine="fuse" fusesearchkeys="nom,type_fr" fusesearchresult="{{nom}} - {{type_fr}}" fusesearchthreshold="0.3"
+                metadata="https://geobretagne.fr/datahub/dataset/adeb5a6c-6aeb-46e9-bfcc-5a4b8a54843c" legendurl="https://geobretagne.fr/geoserver/osm/ows?SERVICE=WMS&amp;VERSION=1.3.0&amp;REQUEST=GetLegendGraphic&amp;SLD_VERSION=1.1.0&amp;FORMAT=image/png&amp;TRANSPARENT=true&amp;LAYER=commerce&amp;STYLE="
+                url="https://geobretagne.fr/apps/macommune/customlayers/commerce.js">
+                <template url="https://geobretagne.fr/apps/macommune/templates/commerce.mst"/>
+            </layer>
+            <layer id="sante" name="Equipement de santé" visible="true" tiled="false"
+                queryable="true" type="customlayer" vectorlegend="false" dynamiclegend="true"
+                attribution="OpenStreetMap" legendurl="https://geobretagne.fr/geoserver/osm/ows?SERVICE=WMS&amp;VERSION=1.3.0&amp;REQUEST=GetLegendGraphic&amp;SLD_VERSION=1.1.0&amp;FORMAT=image/png&amp;TRANSPARENT=true&amp;LAYER=sante&amp;STYLE="
+                searchable="true" searchengine="fuse" fusesearchkeys="nom,type_fr" fusesearchresult="{{nom}} - {{type_fr}}" fusesearchthreshold="0.3"
+                metadata="https://geobretagne.fr/datahub/dataset/cc05ddc0-a8ea-476b-860a-b3b4d8451aa7"
+                url="https://geobretagne.fr/apps/macommune/customlayers/sante.js">
+                <template url="https://geobretagne.fr/apps/macommune/templates/sante.mst"/>
+            </layer>
+            <layer id="dae" name="Défibrillateurs" visible="true" tiled="false" infoformat="application/vnd.ogc.gml"
+                searchable="false" queryable="true" type="customlayer"
+                attribution="Data.gouv"
+                metadata="https://geobretagne.fr/datahub/dataset/73a7717c-7414-4d5e-930d-ef765c5a7aad"
+                legendurl="https://geobretagne.fr/geoserver/osm/ows?SERVICE=WMS&amp;VERSION=1.3.0&amp;REQUEST=GetLegendGraphic&amp;SLD_VERSION=1.1.0&amp;FORMAT=image/png&amp;TRANSPARENT=true&amp;LAYER=dae&amp;STYLE="
+                url="https://geobretagne.fr/apps/macommune/customlayers/dae.js">
+                <template url="https://geobretagne.fr/apps/macommune/templates/dae.mst"/>
+            </layer>
+        </theme>
+
+        <theme id="mobilites" name="Mobilités" collapsed="true" icon="fas fa-caret-right">
+            <layer id="arret_ferroviaire" name="Arrêts ferroviaires régionaux" visible="true" tiled="true"
+                searchable="true" queryable="true" fields="" aliases=""
+                infoformat="application/vnd.ogc.gml" featurecount="20"
+                style="transports_arret_ferr_defaut, transports_arret_ferr_borne,transports_arret_ferr_guichet,transports_arret_ferr_info_dynami,transports_arret_ferr_nature,transports_arret_ferr_parking,transports_arret_ferr_velo,transports_arret_ferr_pmr,transports_arret_ferr_tgv"
+                stylesalias="Par défaut, Distributeur automatique de billet, Guichet, Information dynamique,Nature des arrêts ferroviaires,Parking voiture,Parking vélo, Assistance PMR, Arrêts desservis par le TGV"
+                legendurl="https://kartenn.region-bretagne.fr/doc/transports/icons/gare.svg"
+                url="https://ows.region-bretagne.fr/geoserver/rb/wms"
+                attribution="Région Bretagne"
+                metadata="https://geobretagne.fr/datahub/dataset/4a9d13f7-17be-4a98-9f8f-907cf223072f">
+                <template url="https://kartenn.region-bretagne.fr/kartoviz/apps/region/transport/templates/transport.arret_ferroviaire.mst"></template>
+            </layer>
+            <layer id="ligne_ferroviaire" name="Lignes ferroviaires" visible="true" tiled="true"
+                queryable="false"
+                sld="https://kartenn.region-bretagne.fr/kartoviz/apps/region/transport/ligne_ferroviaire.sld"
+                style="ligne_ferroviaire"
+                infoformat="application/vnd.ogc.gml" featurecount="20"
+                url="https://geobretagne.fr/geoserver/sncf/wms"
+                attribution="SNCF réseau"
+                metadata="https://geobretagne.fr/datahub/dataset/b8927600-5b49-11de-b5dc-0000c0a8230c">
+            </layer>
+            <layer id="arret_reseau_breizhgo_car" name="Arrêts du réseau BreizhGo" visible="true" tiled="false"
+                searchable="false" queryable="true"
+                infoformat="application/vnd.ogc.gml" featurecount="20"
+                url="https://ows.region-bretagne.fr/geoserver/rb/wms"
+                attribution="Région Bretagne"
+                metadata="https://geobretagne.fr/datahub/dataset/252ee615-278d-4bc1-b5a7-9ea543348e72">
+                <template url="https://kartenn.region-bretagne.fr/kartoviz/apps/region/transport/templates/arret_breizhgo.mst"></template>
+            </layer>
+            <layer id="reseau_breizhgo_car" name="Réseau Breizh Go" visible="true" tiled="false"
+                searchable="false" queryable="true"
+                infoformat="application/vnd.ogc.gml" featurecount="20"
+                url="https://ows.region-bretagne.fr/geoserver/rb/wms"
+                attribution="Région Bretagne"
+                metadata="https://geobretagne.fr/datahub/dataset/b08c5f1b-79ed-441a-9198-7360e6338b89">
+                <template url="https://kartenn.region-bretagne.fr/kartoviz/apps/region/transport/templates/ligne_breizhgo.mst"></template>
+            </layer>
+            <layer id="lieux_stationnement" name="Lieux de stationnement" visible="true" tiled="false" infoformat="application/vnd.ogc.gml"
+                searchable="false" queryable="true" type="customlayer"
+                attribution="Data.gouv"
+                metadata="https://geobretagne.fr/datahub/dataset/e8a19b17-297e-4ec2-955f-07744991792f"
+                legendurl="https://geobretagne.fr/geoserver/osm/wms?SERVICE=WMS&amp;VERSION=1.3.0&amp;REQUEST=GetLegendGraphic&amp;SLD_VERSION=1.1.0&amp;FORMAT=image/png&amp;TRANSPARENT=true&amp;LAYER=lieux_stationnement"
+                url="https://geobretagne.fr/apps/macommune/customlayers/lieux_stationnement.js">
+                <template url="https://geobretagne.fr/apps/macommune/templates/lieux_stationnement.mst"/>
+            </layer>
+            <layer id="irve" name="Bornes de recharges de véhicule électrique" visible="true" tiled="false" infoformat="application/vnd.ogc.gml"
+                searchable="false" queryable="true" type="customlayer"
+                attribution="Data.gouv"
+                metadata="https://geobretagne.fr/datahub/dataset/45bcab44-c39c-42a7-b79a-95603f35e5eb"
+                legendurl="https://geobretagne.fr/geoserver/osm/ows?SERVICE=WMS&amp;VERSION=1.3.0&amp;REQUEST=GetLegendGraphic&amp;SLD_VERSION=1.1.0&amp;FORMAT=image/png&amp;TRANSPARENT=true&amp;LAYER=irve&amp;STYLE="
+                url="https://geobretagne.fr/apps/macommune/customlayers/irve.js">
+                <template url="https://geobretagne.fr/apps/macommune/templates/borne_electrique.mst"/>
+            </layer>
+            <layer id="bnlc" name="Lieux de covoiturage"
+                type="wms"
+                url="https://geobretagne.fr/geoserver/opendata/wms"
+                tiled="true"
+                visible="true"
+                infoformat="application/vnd.ogc.gml"
+                metadata="https://geobretagne.fr/datahub/dataset/6f924ad9-09e6-4078-b71b-20bec2f4169f"
+                attribution="data.gouv.fr"
+                queryable="true"
+                searchable="false"
+                infopanel="right-panel"
+                opacity="1"
+                dynamiclegend="false"
+                showintoc="true">
+                <template url="https://geobretagne.fr/apps/macommune/templates/covoiturage.mst"/>
+            </layer>
+            <layer id="stationnement_cyclable" name="Stationnement cyclable"
+                type="wms"
+                url="https://geobretagne.fr/geoserver/osm/wms"
+                tiled="true"
+                visible="true"
+                infoformat="application/vnd.ogc.gml"
+                metadata="https://geobretagne.fr/datahub/dataset/a8560cf5-1c30-4147-881d-dbde4450129e"
+                attribution="OpenStreetMap"
+                queryable="true"
+                searchable="false"
+                infopanel="right-panel"
+                opacity="1"
+                dynamiclegend="false"
+                showintoc="true">
+                <template url="https://geobretagne.fr/apps/macommune/templates/stationnement_cyclable.mst"></template>
+            </layer>
+            <layer id="amenagement_cyclable" name="Aménagement cyclable"
+                type="wms"
+                url="https://geobretagne.fr/geoserver/osm/wms"
+                tiled="true"
+                visible="true"
+                infoformat="application/vnd.ogc.gml"
+                style="amenagements_cyclables"
+                metadata="https://geobretagne.fr/datahub/dataset/a8560cf5-1c30-4147-881d-dbde4450129e"
+                attribution="OpenStreetMap"
+                queryable="true"
+                searchable="false"
+                infopanel="right-panel"
+                opacity="1"
+                dynamiclegend="false"
+                showintoc="true">
+                <template url="https://geobretagne.fr/apps/macommune/templates/amenagement_cyclable.mst"></template>
+            </layer>
+        </theme>
+
+        <theme id="urba" name="Urbanisme" collapsed="true" icon="fas fa-caret-right">
+            <layer id="parcelle" name="Parcelles cadastrales" visible="true" tiled="true" infoformat="application/vnd.ogc.gml"
+                searchable="false" queryable="true" type="customlayer"
+                legendurl="https://geobretagne.fr/geonetwork/srv/api/records/60c7177f-e4e0-48aa-922b-802f2c921efc/attachments/parcelles.png"
+                attribution="DGFip Bretagne"
+                metadata="https://geobretagne.fr/datahub/dataset/60c7177f-e4e0-48aa-922b-802f2c921efc"
+                url="https://geobretagne.fr/apps/macommune/customlayers/parcelle.js">
+                <template url="https://geobretagne.fr/apps/macommune/templates/parcelle.mst"/>
+            </layer>
+            <layer id="dvf_bretagne" name="Suivez l'évolution des prix de l'immobilier" visible="true" tiled="true" infoformat="application/vnd.ogc.gml"
+                searchable="false" queryable="true" type="customlayer"
+                attribution="DGFiP" featurecount="5"
+                legendurl="https://geobretagne.fr/geoserver/dgfip/wms?SERVICE=WMS&amp;VERSION=1.3.0&amp;REQUEST=GetLegendGraphic&amp;SLD_VERSION=1.1.0&amp;FORMAT=image/png&amp;TRANSPARENT=true&amp;LAYER=dvf_bretagne"
+                metadata="https://geobretagne.fr/datahub/dataset/ff9e5192-3f83-4a59-a9d0-dd3a6ac1f201"
+                url="https://geobretagne.fr/apps/macommune/customlayers/dvf.js">
+                <template url="https://geobretagne.fr/apps/dvf/templates/fiche.mst"/>
+            </layer>
+        </theme>
+    </themes>
+</config>
