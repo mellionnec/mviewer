@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
     <application
-        title="Parcelles ELAG Mellionnec"
+        title="Mellionnec - Campagne Elagage 2026"
         showhelp="false"
         measuretools="true"
         zoomtools="true"
@@ -20,7 +20,7 @@
     <searchparameters localities="true" features="true" bbox="false" static="false"/>
 
     <extensions>
-        <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@b1e3be0009774678a355446e8cb5257544006e08/apps/js/elag-comments.js"/>
+        <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@4be746f2d4314b0d8a688921a748bcfe0d7088ab/apps/js/elag-comments.js"/>
     </extensions>
 
     <baselayers style="default">
