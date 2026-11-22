@@ -281,11 +281,29 @@
     }
   }
 
-  /* ---------- style de la couche parcelle : trait noir pointille, fond jaune 0.5 ---------- */
+  /* ---------- style de la couche parcelle : hachures jaunes, contour noir pointille ---------- */
+  var hatchFillCache = null;
+  function hatchFill() {
+    if (hatchFillCache) { return hatchFillCache; }
+    var c = document.createElement("canvas");
+    c.width = 8; c.height = 8;
+    var ctx = c.getContext("2d");
+    ctx.strokeStyle = "rgba(255,255,0,0.75)";
+    ctx.lineWidth = 3;
+    ctx.lineCap = "butt";
+    ctx.beginPath();
+    ctx.moveTo(0, 8); ctx.lineTo(8, 0);
+    ctx.moveTo(-2, 2); ctx.lineTo(2, -2);
+    ctx.moveTo(6, 10); ctx.lineTo(10, 6);
+    ctx.stroke();
+    hatchFillCache = new ol.style.Fill({ color: ctx.createPattern(c, "repeat") });
+    return hatchFillCache;
+  }
+
   function parcelleStyle() {
     return new ol.style.Style({
       stroke: new ol.style.Stroke({ color: "#000000", width: 2, lineDash: [6, 4] }),
-      fill: new ol.style.Fill({ color: "rgba(255,255,0,0.5)" })
+      fill: hatchFill()
     });
   }
 
@@ -295,18 +313,30 @@
       var l = o && o.layer;
       if (!l || !l.setStyle) { return false; }
       l.setStyle(parcelleStyle());
-      try {
-        window.mviewer.drawVectorLegend("parc_elag", [{
-          label: "Parcelle ELAG",
-          geometry: "Polygon",
-          styles: [parcelleStyle()]
-        }]);
-      } catch (e) { console.log("elag: legende parcelle non dessinee", e); }
-      console.log("elag: style parcelle applique (noir pointille, jaune)");
+      console.log("elag: style parcelle applique (hachures jaunes, contour noir pointille)");
       return true;
     } catch (e) {
       console.log("elag: erreur application style parcelle", e);
       return true; /* ne pas boucler sur une erreur permanente */
+    }
+  }
+
+  /* legende : mviewer cree le canvas vector-legend-<id> quand la couche est
+   * ajoutee au panneau ; si on dessine trop tot, le canvas n'existe pas ou
+   * est ecrase ensuite. On retente jusqu'a ce qu'il existe et soit renseigne. */
+  function applyParcelleLegend() {
+    try {
+      var cv = document.getElementById("vector-legend-parc_elag");
+      if (!cv) { return false; }
+      window.mviewer.drawVectorLegend("parc_elag", [{
+        label: "Parcelle identifi\u00e9e",
+        geometry: "Polygon",
+        styles: [parcelleStyle()]
+      }]);
+      return !!(cv.width && cv.height);
+    } catch (e) {
+      console.log("elag: legende parcelle non dessinee", e);
+      return false;
     }
   }
 
@@ -340,7 +370,8 @@
     var doneP = applyParcelleStyle();
     var doneC = applyCommuneStyle();
     var doneG = addGristLink();
-    if ((doneP && doneC && doneG) || ++styleTries > 200) { clearInterval(styleTimer); }
+    var doneL = applyParcelleLegend();
+    if ((doneP && doneC && doneG && doneL) || ++styleTries > 200) { clearInterval(styleTimer); }
   }, 250);
   /* ---------- deployer les deux themes au chargement ----------
    * mviewer n'ouvre au demarrage que le 1er theme collapsed=false et le menu
