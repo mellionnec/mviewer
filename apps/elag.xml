@@ -20,7 +20,7 @@
     <searchparameters localities="true" features="true" bbox="false" static="false"/>
 
     <extensions>
-        <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@34d828c282bc848731b4248ad17cd89919abe5b5/apps/js/elag-comments.js"/>
+        <extension type="javascript" src="https://cdn.jsdelivr.net/gh/mellionnec/mviewer@5dc6eb62fc50fd8ce6e5bdd8edb5cdb9d96ed7a3/apps/js/elag-comments.js"/>
     </extensions>
 
     <baselayers style="default">
